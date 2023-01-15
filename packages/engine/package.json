@@ -1,0 +1,20 @@
+{
+  "name": "@tooyea/engine",
+  "version": "0.1.0",
+  "description": "涂鸦编辑器引擎",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "three": "0.148.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.3",
+    "@types/three": "0.148.0",
+    "esno": "0.16.3"
+  }
+}

@@ -1,0 +1,8 @@
+export enum LifeCycleEnum {
+  CREATED,
+  MOUNTED,
+  BEFORE_UPDATE,
+  UPDATED,
+  BEFORE_DESTROY,
+  DESTROYED,
+}
