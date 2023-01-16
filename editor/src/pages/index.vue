@@ -5,9 +5,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { editor } from "../editor";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import { onMounted } from 'vue';
+
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+
+import { editor } from '../editor';
 
 onMounted(() => {
   var loader = new OBJLoader(); //obj加载器
@@ -21,11 +23,11 @@ onMounted(() => {
     //   element.map = texture;
     // });
 
-    // console.log("物体", obj, obj.children[0].material[0]);
-    obj.scale.set(0.2, 0.2, 0.2); //放大obj组对象
+    console.log("物体", obj);
+    // obj.scale.set(0.2, 0.2, 0.2); //放大obj组对象
     obj.rotation.set(0, 0, 0);
     editor.scene.add(obj); //返回的组对象插入场景中
-    editor.render("canvas");
+    editor.mount("canvas");
   });
 });
 </script>
