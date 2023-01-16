@@ -1,8 +1,8 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-import { LifeCycleEnum } from '../constants';
-import { TooyeaLoader } from '../loader';
+import { LifeCycleEnum } from "../constants";
+import { TooyeaLoader } from "../loader";
 
 // 编辑器初始化参数
 export class TooyeaEditorOptions {
@@ -156,7 +156,7 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
     const width = window.innerWidth; //窗口宽度
     const height = window.innerHeight; //窗口高度
     this.renderer.setSize(width, height);
-    this.renderer.setClearColor(0xb9d3ff, 1); //设置背景颜色
+    this.renderer.setClearColor("#dbdbdb", 1); //设置背景颜色
 
     const controls = new OrbitControls(this.camera, this.renderer.domElement); //创建控件对象
     controls.addEventListener("change", this.render.bind(this)); //监听鼠标、键盘事件

@@ -5,23 +5,24 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted } from "vue";
+import * as THREE from "three";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-
-import { editor } from '../editor';
+import { editor } from "../editor";
+import { canvas } from "./canvas";
 
 onMounted(() => {
   var loader = new OBJLoader(); //obj加载器
 
-  // const texture = new THREE.CanvasTexture(canvas);
-  // texture.needsUpdate = true;
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
 
   loader.load("football/model2.obj", function (obj) {
     // 直接使用 texture 进行贴图
-    // obj.children[0].material.forEach((element) => {
-    //   element.map = texture;
-    // });
+    obj.children[0].material.forEach((element) => {
+      element.map = texture;
+    });
 
     console.log("物体", obj);
     // obj.scale.set(0.2, 0.2, 0.2); //放大obj组对象
