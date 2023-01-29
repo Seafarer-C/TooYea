@@ -1,8 +1,8 @@
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-import { LifeCycleEnum } from "../constants";
-import { TooyeaLoader } from "../loader";
+import { LifeCycleEnum } from '../constants';
+import { TooyeaLoader } from '../loader';
 
 // 编辑器初始化参数
 export class TooyeaEditorOptions {
@@ -67,7 +67,8 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
     const k = width / height; //窗口宽高比
     const s = 200; //三维场景缩放系数
     //创建相机对象
-    this.camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+    // this.camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+    this.camera = new THREE.PerspectiveCamera(45, k, 1, 20000);
     this.camera.position.set(0, 0, 200); //设置相机位置
     this.camera.lookAt(this.scene.position); //设置相机方向(指向的场景对象)
   }
@@ -156,7 +157,21 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
     const width = window.innerWidth; //窗口宽度
     const height = window.innerHeight; //窗口高度
     this.renderer.setSize(width, height);
-    this.renderer.setClearColor("#dbdbdb", 1); //设置背景颜色
+    // 加载天空盒
+    const textureLoader = new THREE.CubeTextureLoader();
+    textureLoader.setPath(`/skybox/`);
+    const texture = textureLoader.load([
+      "right.jpeg",
+      "left.jpeg",
+      "top.jpeg",
+      "bottom.jpeg",
+      "front.jpeg",
+      "back.jpeg",
+    ]);
+    console.log(texture);
+    texture.encoding = THREE.sRGBEncoding;
+    this.scene.background = texture;
+    // this.renderer.setClearColor("#a5a9b5", 1); //设置背景颜色
 
     const controls = new OrbitControls(this.camera, this.renderer.domElement); //创建控件对象
     controls.addEventListener("change", this.render.bind(this)); //监听鼠标、键盘事件

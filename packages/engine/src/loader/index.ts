@@ -6,7 +6,7 @@ export class TooyeaLoader<T> {
   }
   state!: T;
 
-  // loader`s format, used to identify the file type, eg .obj
+  // loader`s format, used to identify the file type, eg .obj or .gltf/.glb
   format!: string;
   // three`s loader, used to load model
   loader!: THREE.Loader;

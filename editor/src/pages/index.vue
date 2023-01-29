@@ -5,18 +5,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import * as THREE from "three";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import { onMounted } from 'vue';
 
-import { editor } from "../editor";
-import { canvas } from "./canvas";
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+
+import { editor } from '../editor';
+import { texture } from './canvas';
 
 onMounted(() => {
   var loader = new OBJLoader(); //obj加载器
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.needsUpdate = true;
 
   loader.load("football/model2.obj", function (obj) {
     // 直接使用 texture 进行贴图
@@ -24,11 +21,12 @@ onMounted(() => {
       element.map = texture;
     });
 
-    console.log("物体", obj);
-    // obj.scale.set(0.2, 0.2, 0.2); //放大obj组对象
+    obj.scale.set(3, 3, 3); //放大obj组对象
+    obj.position.set(50, -450, 0);
     obj.rotation.set(0, 0, 0);
     editor.scene.add(obj); //返回的组对象插入场景中
     editor.mount("canvas");
+    console.log("物体", obj);
   });
 });
 </script>
