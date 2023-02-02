@@ -1,10 +1,14 @@
-import { TooyeaEditor } from '@tooyea/engine';
+import { TooyeaEditor } from "@tooyea/engine";
 
-import { ObjLoader } from './loaders/obj-loader';
-import { StateConfig } from './state';
+import { ObjLoader } from "./loaders/obj-loader";
+import { StateConfig } from "./state";
 
-export const editor = new TooyeaEditor<StateConfig>({
+const state = {
   sceneConfig: {},
   lightConfig: {},
   cameraConfig: {},
-}).addLoaders([ObjLoader]);
+};
+
+export const editor = new TooyeaEditor<StateConfig>(state).addLoaders([
+  ObjLoader,
+]);

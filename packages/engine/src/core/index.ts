@@ -83,7 +83,7 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
 
   // 添加 loaders
   addLoaders(clzArray: Array<new (state: T) => TooyeaLoader<T>>) {
-    this.loaders = clzArray.map((cls) => new cls(this.state));
+    this.loaders = clzArray.map((cls) => new cls(this.state).init());
     return this;
   }
 
@@ -142,6 +142,7 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
   load(meshInfo: TooyeaMeshInfoModel, texture) {
     const { format, meshSrc, textureSrcs, scale, rotation } = meshInfo;
     const loader = this.loaders.find((l) => l.format === format);
+    console.log(loader);
     // loader.load({ url: meshSrc });
     loader.loader.load(meshSrc, (obj) => {
       // 直接使用 texture 进行贴图

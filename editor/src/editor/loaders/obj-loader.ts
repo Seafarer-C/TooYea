@@ -1,13 +1,10 @@
-import * as THREE from 'three';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import * as THREE from "three";
+import { TooyeaLoader } from "@tooyea/engine";
 
-import { TooyeaLoader } from '@tooyea/engine';
-
-import { StateConfig } from '../state';
+import { StateConfig } from "../state";
 
 export class ObjLoader extends TooyeaLoader<StateConfig> {
-  format = ".obj";
-  loader = new OBJLoader();
+  format = "obj";
 
   loadHandle = (group: THREE.Group) => {
     console.log(group);
