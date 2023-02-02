@@ -1,6 +1,6 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 
-import { editor } from '../editor';
+import { editor } from "../editor";
 
 export const canvas = document.createElement("canvas");
 canvas.style.position = "fixed";

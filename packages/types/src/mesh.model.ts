@@ -1,5 +1,7 @@
 // 场景中的物体信息
 export class TooyeaMeshInfoModel {
+  // mesh 文件类型
+  format: string;
   // mesh 资源地址
   meshSrc: string;
   // 贴图资源地址

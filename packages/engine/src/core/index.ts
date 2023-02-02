@@ -1,17 +1,18 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { TooyeaMeshInfoModel } from "@tooyea/types";
 
-import { LifeCycleEnum } from '../constants';
-import { TooyeaLoader } from '../loader';
+import { LifeCycleEnum } from "../constants";
+import { TooyeaLoader } from "../loader";
 
 // 编辑器初始化参数
 export class TooyeaEditorOptions {
   // 场景配置
-  sceneConfig: object;
+  sceneConfig: any;
   // 光源配置
-  lightConfig: object;
+  lightConfig: any;
   // 相机配置
-  cameraConfig: object;
+  cameraConfig: any;
 }
 
 // 编辑器引擎核心模块
@@ -138,9 +139,23 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
   //#endregion
 
   //#region 加载模型与贴图
-  // load(src: string, textures: THREE.Texture) {
-  //   this.loaders[0].loader.load(src, this.loaders[0].loadHandle);
-  // }
+  load(meshInfo: TooyeaMeshInfoModel, texture) {
+    const { format, meshSrc, textureSrcs, scale, rotation } = meshInfo;
+    const loader = this.loaders.find((l) => l.format === format);
+    // loader.load({ url: meshSrc });
+    loader.loader.load(meshSrc, (obj) => {
+      // 直接使用 texture 进行贴图
+      obj.children[0].material.forEach((element) => {
+        element.map = texture;
+      });
+
+      obj.scale.set(...scale); //放大obj组对象
+      obj.position.set(50, -450, 0);
+      obj.rotation.set(...rotation);
+      this.scene.add(obj); //返回的组对象插入场景中
+      console.log("物体", obj);
+    });
+  }
   //#endregion
 
   // 执行渲染
@@ -154,6 +169,7 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
       canvas: this.el,
       antialias: true,
     });
+
     const width = window.innerWidth; //窗口宽度
     const height = window.innerHeight; //窗口高度
     this.renderer.setSize(width, height);
