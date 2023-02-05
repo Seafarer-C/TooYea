@@ -139,23 +139,10 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
   //#endregion
 
   //#region 加载模型与贴图
-  load(meshInfo: TooyeaMeshInfoModel, texture) {
-    const { format, meshSrc, textureSrcs, scale, rotation } = meshInfo;
-    const loader = this.loaders.find((l) => l.format === format);
-    console.log(loader);
-    // loader.load({ url: meshSrc });
-    loader.loader.load(meshSrc, (obj) => {
-      // 直接使用 texture 进行贴图
-      obj.children[0].material.forEach((element) => {
-        element.map = texture;
-      });
-
-      obj.scale.set(...scale); //放大obj组对象
-      obj.position.set(50, -450, 0);
-      obj.rotation.set(...rotation);
-      this.scene.add(obj); //返回的组对象插入场景中
-      console.log("物体", obj);
-    });
+  async load(meshInfo: TooyeaMeshInfoModel, texture) {
+    const loader = this.loaders.find((l) => l.format === meshInfo.format);
+    await loader.load(meshInfo, this.scene, texture);
+    this.render();
   }
   //#endregion
 

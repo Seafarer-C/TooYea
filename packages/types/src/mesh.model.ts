@@ -7,7 +7,9 @@ export class TooyeaMeshInfoModel {
   // 贴图资源地址
   textureSrcs: string[];
   // 缩放倍数
-  scale: [number, number, number];
+  scale?: [number, number, number];
   // 旋转角度
-  rotation: [number, number, number];
+  rotation?: [number, number, number];
+  // 相对位置
+  position?: [number, number, number];
 }
