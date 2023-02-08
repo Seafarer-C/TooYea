@@ -96,6 +96,7 @@ export class TooyeaLoader<T> {
     const meshTextures: Array<TooyeaMeshTexture> = [];
 
     // 直接使用 texture 进行贴图
+    // TODO: 首先需要讲group结构排扁成mesh数组
     group.children.forEach((mesh: THREE.Mesh, meshIndex: number) => {
       const textureSrcArray = textureSrcArrays[meshIndex];
       const canvasElArray = canvasElArrays[meshIndex];

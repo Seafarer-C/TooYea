@@ -27,10 +27,10 @@ onMounted(() => {
   //     format: "gltf",
   //     fileSrc: "woman-clothing.glb",
   //     scale: [30, 30, 30],
-  //     textureSrcArrays: [],
+  //     textureSrcArrays: [["football/下载.png"]],
   //     rotation: [0, 0, 0],
   //   },
-  //   texture
+  //   [[canvas]]
   // );
 });
 </script>
