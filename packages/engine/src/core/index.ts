@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Tooyea3DFileInfoModel } from "@tooyea/types";
 
-import { LifeCycleEnum } from "../constants";
+import { EVENTS, LifeCycleEnum, TooyeaEmit } from "../constants";
 import { TooyeaLoader } from "../loader";
 
 // 编辑器初始化参数
@@ -81,9 +81,18 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
   plugins!: Array<Object>;
   controls!: Array<any>;
 
+  // 分发事件
+  emit: TooyeaEmit = (evtName: EVENTS, ...params) => {
+    if (evtName === EVENTS.RENDER) {
+      this.render();
+    }
+  };
+
   // 添加 loaders
-  addLoaders(clzArray: Array<new (state: T) => TooyeaLoader<T>>) {
-    this.loaders = clzArray.map((cls) => new cls(this.state).init());
+  addLoaders(
+    clzArray: Array<new (state: T, emit: TooyeaEmit) => TooyeaLoader<T>>
+  ) {
+    this.loaders = clzArray.map((cls) => new cls(this.state, this.emit).init());
     return this;
   }
 
@@ -139,9 +148,12 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
   //#endregion
 
   //#region 加载模型与贴图
-  async load(fileInfo: Tooyea3DFileInfoModel, texture) {
+  async load(
+    fileInfo: Tooyea3DFileInfoModel,
+    canvasElArrays?: Array<Array<string | HTMLElement>>
+  ) {
     const loader = this.loaders.find((l) => l.format === fileInfo.format);
-    await loader.load(fileInfo, this.scene, texture);
+    await loader.load(fileInfo, this.scene, canvasElArrays);
     this.render();
   }
   //#endregion
@@ -162,20 +174,19 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
     const height = window.innerHeight; //窗口高度
     this.renderer.setSize(width, height);
     // 加载天空盒
-    const textureLoader = new THREE.CubeTextureLoader();
-    textureLoader.setPath(`/skybox/`);
-    const texture = textureLoader.load([
-      "right.jpeg",
-      "left.jpeg",
-      "top.jpeg",
-      "bottom.jpeg",
-      "front.jpeg",
-      "back.jpeg",
-    ]);
-    console.log(texture);
-    texture.encoding = THREE.sRGBEncoding;
-    this.scene.background = texture;
-    // this.renderer.setClearColor("#a5a9b5", 1); //设置背景颜色
+    // const textureLoader = new THREE.CubeTextureLoader();
+    // textureLoader.setPath(`/skybox/`);
+    // const texture = textureLoader.load([
+    //   "right.jpeg",
+    //   "left.jpeg",
+    //   "top.jpeg",
+    //   "bottom.jpeg",
+    //   "front.jpeg",
+    //   "back.jpeg",
+    // ]);
+    // texture.encoding = THREE.sRGBEncoding;
+    // this.scene.background = texture;
+    this.renderer.setClearColor("#a5a9b5", 1); //设置背景颜色
 
     const controls = new OrbitControls(this.camera, this.renderer.domElement); //创建控件对象
     controls.addEventListener("change", this.render.bind(this)); //监听鼠标、键盘事件

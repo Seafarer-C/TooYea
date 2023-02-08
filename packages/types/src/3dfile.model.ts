@@ -5,7 +5,7 @@ export class Tooyea3DFileInfoModel {
   // 3d文件资源地址
   fileSrc: string;
   // 贴图资源地址
-  textureSrcs: string[];
+  textureSrcArrays: Array<string[]>;
   // 缩放倍数
   scale?: [number, number, number];
   // 旋转角度
