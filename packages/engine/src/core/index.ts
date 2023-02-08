@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { TooyeaMeshInfoModel } from "@tooyea/types";
+import { Tooyea3DFileInfoModel } from "@tooyea/types";
 
 import { LifeCycleEnum } from "../constants";
 import { TooyeaLoader } from "../loader";
@@ -139,9 +139,9 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
   //#endregion
 
   //#region 加载模型与贴图
-  async load(meshInfo: TooyeaMeshInfoModel, texture) {
-    const loader = this.loaders.find((l) => l.format === meshInfo.format);
-    await loader.load(meshInfo, this.scene, texture);
+  async load(fileInfo: Tooyea3DFileInfoModel, texture) {
+    const loader = this.loaders.find((l) => l.format === fileInfo.format);
+    await loader.load(fileInfo, this.scene, texture);
     this.render();
   }
   //#endregion

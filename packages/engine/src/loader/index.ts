@@ -1,4 +1,4 @@
-import { TooyeaMeshInfoModel } from "@tooyea/types";
+import { Tooyea3DFileInfoModel } from "@tooyea/types";
 import * as THREE from "three";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -39,9 +39,9 @@ export class TooyeaLoader<T> {
     return this;
   }
 
-  async load(meshInfo: TooyeaMeshInfoModel, scene: THREE.Scene, texture) {
-    const { meshSrc, textureSrcs, scale, rotation, position } = meshInfo;
-    const data = await this.loader.loadAsync(meshSrc);
+  async load(fileInfo: Tooyea3DFileInfoModel, scene: THREE.Scene, texture) {
+    const { fileSrc, textureSrcs, scale, rotation, position } = fileInfo;
+    const data = await this.loader.loadAsync(fileSrc);
     switch (this.format as LoaderFormat) {
       case "gltf":
         data.scene.children.forEach((mesh) => {
@@ -63,9 +63,9 @@ export class TooyeaLoader<T> {
           });
         });
 
-        data.scale.set(...scale); //放大obj组对象
-        data.position.set(...position);
-        data.rotation.set(...rotation);
+        scale && data.scale.set(...scale); //放大obj组对象
+        position && data.position.set(...position);
+        rotation && data.rotation.set(...rotation);
         scene.add(data); //返回的组对象插入场景中
 
         break;

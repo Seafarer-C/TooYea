@@ -1,9 +1,9 @@
 // 场景中的物体信息
-export class TooyeaMeshInfoModel {
-  // mesh 文件类型
+export class Tooyea3DFileInfoModel {
+  // 文件类型
   format: string;
-  // mesh 资源地址
-  meshSrc: string;
+  // 3d文件资源地址
+  fileSrc: string;
   // 贴图资源地址
   textureSrcs: string[];
   // 缩放倍数

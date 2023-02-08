@@ -1,6 +1,6 @@
-import { TooyeaCameraInfoModel } from './camera.model';
-import { TooyeaLightInfoModel } from './light.model';
-import { TooyeaMeshInfoModel } from './mesh.model';
+import { TooyeaCameraInfoModel } from "./camera.model";
+import { TooyeaLightInfoModel } from "./light.model";
+import { Tooyea3DFileInfoModel } from "./3dfile.model";
 
 /**
  * 场景信息
@@ -10,8 +10,8 @@ export class TooyeaSceneInfoModel {
   cameraInfo: TooyeaCameraInfoModel;
   // 光源信息
   lightInfos: TooyeaLightInfoModel[];
-  // 场景中的物体
-  meshInfos: TooyeaMeshInfoModel[];
+  // 场景中需要加载的3d文件
+  files: Tooyea3DFileInfoModel[];
 
   // 背景色
   backgroundColor: string | number;
