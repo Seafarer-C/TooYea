@@ -1,35 +1,43 @@
 import * as THREE from "three";
 import { EVENTS, TooyeaEmit } from "../constants";
-import { TooyeaCanvas } from "../canvas";
+import { TooyeaCanvasOperator } from "../canvas";
 
 export class TooyeaMeshTexture {
   constructor({ textureSrc, emit, canvasEl }) {
     this.textureSrc = textureSrc;
     this.emit = emit;
 
-    this.canvas = new TooyeaCanvas({
+    // 初始化创建 canvas 操作对象
+    this.canvasOperator = new TooyeaCanvasOperator({
       el: canvasEl,
       backgroundImageSrc: textureSrc,
       updateCanvas: this.update,
     });
     this.texture = new THREE.CanvasTexture(
-      this.canvas.fabricCanvas.getElement()
+      this.canvasOperator.fabricCanvas.getElement()
     );
   }
 
   id: string;
   meshId: string;
+  // 对应 mesh 的 material 索引
   materialIndex: number;
+
   // 贴图底图src
   textureSrc: string;
-  texture: THREE.Texture;
+  private texture: THREE.Texture;
+
+  async getTexture() {
+    return this.texture;
+  }
   emit: TooyeaEmit;
 
   // 贴图的canvas操作对象
-  canvas?: TooyeaCanvas;
+  canvasOperator?: TooyeaCanvasOperator;
 
+  // 获取fabric画布对象
   getFabricCanvas(): fabric.Canvas {
-    return this.canvas.fabricCanvas;
+    return this.canvasOperator.fabricCanvas;
   }
 
   // 绑定mesh

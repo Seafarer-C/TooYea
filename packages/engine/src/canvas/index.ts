@@ -1,6 +1,6 @@
 import { fabric } from "fabric";
 
-export class TooyeaCanvas {
+export class TooyeaCanvasOperator {
   constructor({
     el,
     backgroundImageSrc,
@@ -36,20 +36,27 @@ export class TooyeaCanvas {
   updateCanvas: Function;
 
   // 设置背景图
-  initBackground() {
-    fabric.Image.fromURL(this.backgroundImageSrc, (img) => {
-      img.set({
-        originX: "left",
-        originY: "top",
-      });
-      this.fabricCanvas.setWidth(img.width);
-      this.fabricCanvas.setHeight(img.height);
-      this.canvasDom.style.width = "100%";
-      this.canvasDom.style.height = "100%";
-      this.fabricCanvas.setBackgroundImage(
-        img,
-        this.fabricCanvas.renderAll.bind(this.fabricCanvas)
-      );
-    });
+  async initBackground() {
+    return new Promise((resolve, reject) =>
+      fabric.Image.fromURL(this.backgroundImageSrc, (img) => {
+        try {
+          img.set({
+            originX: "left",
+            originY: "top",
+          });
+          this.fabricCanvas.setWidth(img.width);
+          this.fabricCanvas.setHeight(img.height);
+          this.canvasDom.style.width = "100%";
+          this.canvasDom.style.height = "100%";
+          this.fabricCanvas.setBackgroundImage(
+            img,
+            this.fabricCanvas.renderAll.bind(this.fabricCanvas)
+          );
+          resolve(true);
+        } catch (e) {
+          reject(e);
+        }
+      })
+    );
   }
 }
