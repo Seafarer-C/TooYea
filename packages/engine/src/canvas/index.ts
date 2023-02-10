@@ -11,22 +11,31 @@ export class TooyeaCanvasOperator {
     // 更新画布事件
     updateCanvas: Function;
   }) {
-    this.fabricCanvas = new fabric.Canvas(this.canvasDom);
-    this.backgroundImageSrc = backgroundImageSrc;
-    this.updateCanvas = updateCanvas;
     // 挂载画布
     (typeof el === "string" ? document.getElementById(el) : el).append(
       this.canvasDom
     );
+    this.fabricCanvas = new fabric.Canvas(this.canvasDom);
+    this.fabricCanvas.on("mouse:up", (options) => {
+      console.log("mouse:up事件：", options);
+      updateCanvas();
+    });
+    this.backgroundImageSrc = backgroundImageSrc;
+    this.updateCanvas = updateCanvas;
+
     setTimeout(() => {
-      this.fabricCanvas.add(
-        new fabric.Rect({
-          top: 120,
-          left: 120,
-          width: 100,
-          height: 100,
-        })
-      );
+      const rect = new fabric.Rect({
+        top: 120,
+        left: 120,
+        width: 100,
+        height: 100,
+        fill: "yellow",
+      });
+      rect.on("moving", (options) => {
+        console.log("rect moving事件：", options);
+        updateCanvas();
+      });
+      this.fabricCanvas.add(rect);
       updateCanvas();
     }, 2000);
   }
@@ -53,10 +62,16 @@ export class TooyeaCanvasOperator {
             originX: "left",
             originY: "top",
           });
-          this.fabricCanvas.setWidth(img.width);
-          this.fabricCanvas.setHeight(img.height);
-          this.canvasDom.style.width = "100%";
-          this.canvasDom.style.height = "100%";
+          this.fabricCanvas.setWidth(img.width, {
+            backstoreOnly: true,
+          });
+          this.fabricCanvas.setHeight(img.height, {
+            backstoreOnly: true,
+          });
+
+          this.canvasDom.style.width = "100%!important";
+          this.canvasDom.style.height = "100%!important";
+
           this.fabricCanvas.setBackgroundImage(
             img,
             this.fabricCanvas.renderAll.bind(this.fabricCanvas)
