@@ -16,9 +16,19 @@ onMounted(() => {
     {
       format: "obj",
       fileSrc: "football/model2.obj",
-      scale: [2, 2, 2],
-      textureSrcArrays: [["football/下载.png"]],
-      position: [50, -260, 0],
+      // scale: [1.5, 1.5, 1.5],
+      textureSrcArrays: [["football/top.png"]],
+      position: [50, -70, 0],
+    },
+    [[canvas]]
+  );
+  editor.load(
+    {
+      format: "obj",
+      fileSrc: "kuzi/model.obj",
+      // scale: [1.5, 1.5, 1.5],
+      textureSrcArrays: [["kuzi/top.png"]],
+      position: [50, -100, 0],
     },
     [[canvas]]
   );
