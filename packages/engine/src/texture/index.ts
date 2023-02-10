@@ -2,32 +2,53 @@ import * as THREE from "three";
 import { EVENTS, TooyeaEmit } from "../constants";
 import { TooyeaCanvasOperator } from "../canvas";
 
-export class TooyeaMeshTexture {
+export interface ITooyeaMeshTexture {}
+
+export class TooyeaMeshTexture implements ITooyeaMeshTexture {
   constructor({ textureSrc, emit, canvasEl }) {
     this.textureSrc = textureSrc;
     this.emit = emit;
-
-    // 初始化创建 canvas 操作对象
-    this.canvasOperator = new TooyeaCanvasOperator({
-      el: canvasEl,
-      backgroundImageSrc: textureSrc,
-      updateCanvas: this.update,
-    });
-    this.texture = new THREE.CanvasTexture(
-      this.canvasOperator.fabricCanvas.getElement()
-    );
+    this.canvasEl = canvasEl;
   }
 
   id: string;
   meshId: string;
   // 对应 mesh 的 material 索引
-  materialIndex: number;
+  materialIndexs: number[] = [];
 
+  canvasEl: string | HTMLElement;
   // 贴图底图src
   textureSrc: string;
-  private texture: THREE.Texture;
+  private texture: THREE.CanvasTexture;
+
+  canvasInit: boolean = false;
+  async initCanvas() {
+    return new Promise((resolve, reject) => {
+      this.canvasOperator
+        .initBackground()
+        .then(() => {
+          this.canvasInit = true;
+          resolve(true);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 
   async getTexture() {
+    if (!this.canvasInit) {
+      // 初始化创建 canvas 操作对象
+      this.canvasOperator = new TooyeaCanvasOperator({
+        el: this.canvasEl,
+        backgroundImageSrc: this.textureSrc,
+        updateCanvas: this.update,
+      });
+      this.texture = new THREE.CanvasTexture(
+        this.canvasOperator.fabricCanvas.getElement()
+      );
+      await this.initCanvas();
+    }
     return this.texture;
   }
   emit: TooyeaEmit;
@@ -46,12 +67,15 @@ export class TooyeaMeshTexture {
   }
 
   bindMaterial(materialIndex: number) {
-    this.materialIndex = materialIndex;
+    this.materialIndexs.push(materialIndex);
   }
 
   // 更新贴图
-  update() {
+  update = () => {
     this.texture.needsUpdate = true;
-    this.emit(EVENTS.RENDER);
-  }
+    console.log("更新", this.texture);
+    setTimeout(() => {
+      this.emit(EVENTS.RENDER);
+    }, 10);
+  };
 }

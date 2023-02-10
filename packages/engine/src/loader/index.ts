@@ -67,14 +67,16 @@ export class TooyeaLoader<T> {
       canvasElArrays,
     });
 
-    scale && group.scale.set(...scale);
-    position && group.position.set(...position);
-    rotation && group.rotation.set(...rotation);
+    meshes.forEach(async (m) => {
+      await m.setMeshTextures();
+      console.log(m.mesh);
 
-    setTimeout(() => {
-      scene.add(group);
+      scale && m.mesh.scale.set(...scale);
+      position && m.mesh.position.set(...position);
+      rotation && m.mesh.rotation.set(...rotation);
+      scene.add(m.mesh);
       this.emit(EVENTS.RENDER);
-    }, 100);
+    });
 
     this.loadHandle(data);
 

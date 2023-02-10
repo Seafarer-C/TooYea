@@ -14,12 +14,21 @@ export class TooyeaCanvasOperator {
     this.fabricCanvas = new fabric.Canvas(this.canvasDom);
     this.backgroundImageSrc = backgroundImageSrc;
     this.updateCanvas = updateCanvas;
-    // 初始化背景图
-    this.initBackground();
     // 挂载画布
     (typeof el === "string" ? document.getElementById(el) : el).append(
       this.canvasDom
     );
+    setTimeout(() => {
+      this.fabricCanvas.add(
+        new fabric.Rect({
+          top: 120,
+          left: 120,
+          width: 100,
+          height: 100,
+        })
+      );
+      updateCanvas();
+    }, 2000);
   }
 
   id: string;

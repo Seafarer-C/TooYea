@@ -17,8 +17,6 @@ export class TooyeaMesh {
     this.emit = emit;
     this.textures = textures;
     this.textures.forEach((t) => t.bindMesh(this.id));
-    // 为mesh设置贴图
-    this.setMeshTextures();
   }
 
   id: string;
@@ -32,12 +30,17 @@ export class TooyeaMesh {
   // 为mesh设置贴图
   async setMeshTextures() {
     if (Array.isArray(this.mesh.material)) {
-      // TODO: 优化成 Promise.all
-      this.mesh.material.forEach(async (m, i) => {
+      const textureArray = await Promise.all(
+        this.textures.map((tx, i) => {
+          // @ts-ignore
+          return tx.getTexture();
+        })
+      );
+      this.mesh.material.forEach((mt, i) => {
         const texture = this.textures[Math.min(i, this.textures.length - 1)];
-        // @ts-ignore
-        m.map = await texture.getTexture();
         texture.bindMaterial(i);
+        // @ts-ignore Material 上存在 map 字段用于标识贴图
+        mt.map = textureArray[Math.min(i, this.textures.length - 1)];
       });
     } else {
       // @ts-ignore Material 上存在 map 字段用于标识贴图

@@ -16,9 +16,9 @@ onMounted(() => {
     {
       format: "obj",
       fileSrc: "football/model2.obj",
-      scale: [3, 3, 3],
+      scale: [2, 2, 2],
       textureSrcArrays: [["football/下载.png"]],
-      position: [50, -450, 0],
+      position: [50, -260, 0],
     },
     [[canvas]]
   );
