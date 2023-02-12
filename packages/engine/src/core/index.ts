@@ -153,8 +153,13 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
     canvasElArrays?: Array<Array<string | HTMLElement>>
   ) {
     const loader = this.loaders.find((l) => l.format === fileInfo.format);
-    await loader.load(fileInfo, this.scene, canvasElArrays);
+    const { meshes, meshTextures } = await loader.load(
+      fileInfo,
+      this.scene,
+      canvasElArrays
+    );
     this.render();
+    return { meshes, meshTextures };
   }
   //#endregion
 

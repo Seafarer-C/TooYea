@@ -39,7 +39,7 @@ export class TooyeaMeshTexture implements ITooyeaMeshTexture {
   }
 
   async getTexture() {
-    if (!this.canvasInit) {
+    if (!this.texture) {
       // 初始化创建 canvas 操作对象
       this.canvasOperator = new TooyeaCanvasOperator({
         el: this.canvasEl,
@@ -61,6 +61,10 @@ export class TooyeaMeshTexture implements ITooyeaMeshTexture {
   // 获取fabric画布对象
   getFabricCanvas(): fabric.Canvas {
     return this.canvasOperator.fabricCanvas;
+  }
+  // 获取 canvas 操作对象
+  getCanvasOperator() {
+    return this.canvasOperator;
   }
 
   // 绑定mesh

@@ -23,17 +23,6 @@ export class TooyeaCanvasOperator {
     });
     this.images = images;
     this.updateCanvas = updateCanvas;
-
-    setTimeout(async () => {
-      const image = await asyncGetImageFromURL("logo/Cleveland_Cavaliers.png");
-      image.on("moving", (options) => {
-        console.log("image moving事件：", options);
-        updateCanvas();
-      });
-      this.fabricCanvas.add(image);
-
-      updateCanvas();
-    }, 2000);
   }
 
   id: string;
@@ -80,8 +69,37 @@ export class TooyeaCanvasOperator {
       );
     }
   }
+
+  // 往画布上新增图片
+  async addImage(imgSrc: string) {
+    const image = await asyncGetImageFromURL(imgSrc);
+    image.on("moving", (options) => {
+      console.log("image moving事件：", options);
+      this.updateCanvas();
+    });
+    this.fabricCanvas.add(image);
+    this.updateCanvas();
+  }
+
+  // 设置背景图
+  async setBackgroundImage(imgSrc: string) {
+    const backgroundImg = await asyncGetImageFromURL(imgSrc);
+    this.fabricCanvas.setBackgroundImage(
+      backgroundImg,
+      this.fabricCanvas.renderAll.bind(this.fabricCanvas)
+    );
+  }
+
+  // 设置背景色
+  setBackgroundColor(backgroundColor: string) {
+    this.fabricCanvas.setBackgroundColor(
+      backgroundColor,
+      this.fabricCanvas.renderAll.bind(this.fabricCanvas)
+    );
+  }
 }
 
+// 根据图片 URL 获取图片资源
 async function asyncGetImageFromURL(imgSrc: string): Promise<fabric.Image> {
   return new Promise((resolve, reject) => {
     fabric.Image.fromURL(imgSrc, (img) => {

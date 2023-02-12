@@ -10,9 +10,9 @@ import { onMounted } from "vue";
 import { editor } from "../editor";
 import { canvas } from "./canvas";
 
-onMounted(() => {
+onMounted(async () => {
   editor.mount("canvas");
-  editor.load(
+  const { meshes, meshTextures } = await editor.load(
     {
       format: "obj",
       fileSrc: "football/model2.obj",
@@ -20,8 +20,7 @@ onMounted(() => {
         [
           {
             overlayImageSrc: "football/top.png",
-            backgroundImageSrc: "background/b.png",
-            backgroundColor: "black",
+            backgroundColor: "#67111a",
           },
         ],
       ],
@@ -37,7 +36,7 @@ onMounted(() => {
         [
           {
             overlayImageSrc: "kuzi/top.png",
-            backgroundColor: "blue",
+            backgroundColor: "#67111a",
           },
         ],
       ],
@@ -52,7 +51,7 @@ onMounted(() => {
       textureImageArrays: [
         [
           {
-            backgroundColor: "blue",
+            backgroundColor: "#67111a",
           },
         ],
       ],
@@ -60,6 +59,9 @@ onMounted(() => {
     },
     [[canvas]]
   );
+  console.log("load 相关信息a🤯", meshes, meshTextures[0].getCanvasOperator());
+  const operator = meshTextures[0].getCanvasOperator();
+  operator?.addImage("logo/Cleveland_Cavaliers.png");
   // editor.load(
   //   {
   //     format: "gltf",
@@ -73,4 +75,22 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style>
+#all-canvas {
+  height: 100vh;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 500px;
+  background-color: #fff;
+}
+.canvas-container {
+  width: 500px !important;
+  height: 500px !important;
+}
+.canvas-container canvas {
+  width: 500px !important;
+  height: 500px !important;
+}
+</style>
