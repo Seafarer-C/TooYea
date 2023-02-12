@@ -1,3 +1,5 @@
+import { ITooyeaTextureImages } from "./texture-images.model";
+
 // 场景中的物体信息
 export class Tooyea3DFileInfoModel {
   // 文件类型
@@ -5,7 +7,7 @@ export class Tooyea3DFileInfoModel {
   // 3d文件资源地址
   fileSrc: string;
   // 贴图资源地址
-  textureSrcArrays: Array<string[]>;
+  textureImageArrays: Array<ITooyeaTextureImages[]>;
   // 缩放倍数
   scale?: [number, number, number];
   // 旋转角度

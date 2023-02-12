@@ -1,4 +1,4 @@
-import { Tooyea3DFileInfoModel } from "@tooyea/types";
+import { ITooyeaTextureImages, Tooyea3DFileInfoModel } from "@tooyea/types";
 import * as THREE from "three";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -50,7 +50,7 @@ export class TooyeaLoader<T> {
     scene: THREE.Scene,
     canvasElArrays?: Array<Array<string | HTMLElement>>
   ) {
-    const { fileSrc, textureSrcArrays, scale, rotation, position } = fileInfo;
+    const { fileSrc, textureImageArrays, scale, rotation, position } = fileInfo;
     const data = await this.loader.loadAsync(fileSrc);
     let group: THREE.Group;
     switch (this.format as LoaderFormat) {
@@ -63,7 +63,7 @@ export class TooyeaLoader<T> {
     }
     const { meshes, meshTextures } = this.groupHandle({
       group,
-      textureSrcArrays,
+      textureImageArrays,
       canvasElArrays,
     });
 
@@ -85,11 +85,11 @@ export class TooyeaLoader<T> {
 
   private groupHandle({
     group,
-    textureSrcArrays,
+    textureImageArrays,
     canvasElArrays,
   }: {
     group: THREE.Group;
-    textureSrcArrays: Array<Array<string>>;
+    textureImageArrays: Array<Array<ITooyeaTextureImages>>;
     canvasElArrays?: Array<Array<string | HTMLElement>>;
   }) {
     // 文件内3d网格图形
@@ -100,13 +100,13 @@ export class TooyeaLoader<T> {
     // 直接使用 texture 进行贴图
     // TODO: 首先需要讲group结构排扁成mesh数组
     group.children.forEach((mesh: THREE.Mesh, meshIndex: number) => {
-      const textureSrcArray = textureSrcArrays[meshIndex];
+      const textureImageArray = textureImageArrays[meshIndex];
       const canvasElArray = canvasElArrays[meshIndex];
       // 生成贴图数组
-      const textures = textureSrcArray.map(
-        (textureSrc, textureIndex) =>
+      const textures = textureImageArray.map(
+        (textureImages, textureIndex) =>
           new TooyeaMeshTexture({
-            textureSrc,
+            textureImages,
             emit: this.emit,
             canvasEl: canvasElArray[textureIndex],
           })

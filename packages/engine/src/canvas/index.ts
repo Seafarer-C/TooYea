@@ -1,13 +1,14 @@
+import { ITooyeaTextureImages } from "@tooyea/types";
 import { fabric } from "fabric";
 
 export class TooyeaCanvasOperator {
   constructor({
     el,
-    backgroundImageSrc,
+    images,
     updateCanvas,
   }: {
     el: HTMLElement | string;
-    backgroundImageSrc: string;
+    images: ITooyeaTextureImages;
     // 更新画布事件
     updateCanvas: Function;
   }) {
@@ -15,31 +16,22 @@ export class TooyeaCanvasOperator {
     (typeof el === "string" ? document.getElementById(el) : el).append(
       this.canvasDom
     );
-    this.fabricCanvas = new fabric.Canvas(this.canvasDom, {
-      overlayImage: backgroundImageSrc,
-      overlayVpt: false, // 如果设置为假覆盖图像不受视口变换的影响
-      backgroundColor: "red", // 背景色
-    });
+    this.fabricCanvas = new fabric.Canvas(this.canvasDom);
     this.fabricCanvas.on("mouse:up", (options) => {
       console.log("mouse:up事件：", options);
       updateCanvas();
     });
-    this.backgroundImageSrc = backgroundImageSrc;
+    this.images = images;
     this.updateCanvas = updateCanvas;
 
-    setTimeout(() => {
-      const rect = new fabric.Rect({
-        top: 120,
-        left: 120,
-        width: 100,
-        height: 100,
-        fill: "yellow",
-      });
-      rect.on("moving", (options) => {
-        console.log("rect moving事件：", options);
+    setTimeout(async () => {
+      const image = await asyncGetImageFromURL("logo/Cleveland_Cavaliers.png");
+      image.on("moving", (options) => {
+        console.log("image moving事件：", options);
         updateCanvas();
       });
-      this.fabricCanvas.add(rect);
+      this.fabricCanvas.add(image);
+
       updateCanvas();
     }, 2000);
   }
@@ -51,42 +43,59 @@ export class TooyeaCanvasOperator {
   canvasDom: HTMLCanvasElement = document.createElement("canvas");
   // fabric canvas对象
   fabricCanvas: fabric.Canvas;
-  // 背景图资源地址
-  backgroundImageSrc: string;
+  // 图片资源地址
+  images: ITooyeaTextureImages;
 
   widgets = [];
   updateCanvas: Function;
 
-  // 设置背景图
-  async initBackground() {
-    return new Promise((resolve, reject) =>
-      fabric.Image.fromURL(this.backgroundImageSrc, (img) => {
-        try {
-          img.set({
-            originX: "left",
-            originY: "top",
-          });
-          this.fabricCanvas.setWidth(img.width, {
-            backstoreOnly: true,
-          });
-          this.fabricCanvas.setHeight(img.height, {
-            backstoreOnly: true,
-          });
-
-          this.canvasDom.style.width = "100%!important";
-          this.canvasDom.style.height = "100%!important";
-
-          // this.fabricCanvas.setBackgroundImage(
-          //   img,
-          //   this.fabricCanvas.renderAll.bind(this.fabricCanvas)
-          // );
-          resolve(true);
-        } catch (e) {
-          reject(e);
-        }
-      })
-    );
+  // 初始化图片资源
+  async initCanvasImages() {
+    const { overlayImageSrc, backgroundColor, backgroundImageSrc } =
+      this.images;
+    if (overlayImageSrc) {
+      const overlayImg = await asyncGetImageFromURL(overlayImageSrc);
+      this.fabricCanvas.setWidth(overlayImg.width, {
+        backstoreOnly: true,
+      });
+      this.fabricCanvas.setHeight(overlayImg.height, {
+        backstoreOnly: true,
+      });
+      this.fabricCanvas.setOverlayImage(
+        overlayImg,
+        this.fabricCanvas.renderAll.bind(this.fabricCanvas)
+      );
+    }
+    if (backgroundImageSrc) {
+      const backgroundImg = await asyncGetImageFromURL(backgroundImageSrc);
+      this.fabricCanvas.setBackgroundImage(
+        backgroundImg,
+        this.fabricCanvas.renderAll.bind(this.fabricCanvas)
+      );
+    }
+    if (backgroundColor) {
+      this.fabricCanvas.setBackgroundColor(
+        backgroundColor,
+        this.fabricCanvas.renderAll.bind(this.fabricCanvas)
+      );
+    }
   }
+}
+
+async function asyncGetImageFromURL(imgSrc: string): Promise<fabric.Image> {
+  return new Promise((resolve, reject) => {
+    fabric.Image.fromURL(imgSrc, (img) => {
+      try {
+        img.set({
+          originX: "left",
+          originY: "top",
+        });
+        resolve(img);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  });
 }
 
 // 背景图转前景图

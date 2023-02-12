@@ -186,7 +186,7 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
     // ]);
     // texture.encoding = THREE.sRGBEncoding;
     // this.scene.background = texture;
-    this.renderer.setClearColor("#a5a9b5", 1); //设置背景颜色
+    this.renderer.setClearColor("#f6f6f6", 1); //设置背景颜色
 
     const controls = new OrbitControls(this.camera, this.renderer.domElement); //创建控件对象
     controls.addEventListener("change", this.render.bind(this)); //监听鼠标、键盘事件

@@ -16,8 +16,15 @@ onMounted(() => {
     {
       format: "obj",
       fileSrc: "football/model2.obj",
-      // scale: [1.5, 1.5, 1.5],
-      textureSrcArrays: [["football/top.png"]],
+      textureImageArrays: [
+        [
+          {
+            overlayImageSrc: "football/top.png",
+            backgroundImageSrc: "background/b.png",
+            backgroundColor: "black",
+          },
+        ],
+      ],
       position: [50, -70, 0],
     },
     [[canvas]]
@@ -26,9 +33,30 @@ onMounted(() => {
     {
       format: "obj",
       fileSrc: "kuzi/model.obj",
-      // scale: [1.5, 1.5, 1.5],
-      textureSrcArrays: [["kuzi/top.png"]],
-      position: [50, -100, 0],
+      textureImageArrays: [
+        [
+          {
+            overlayImageSrc: "kuzi/top.png",
+            backgroundColor: "blue",
+          },
+        ],
+      ],
+      position: [50, -95, 0],
+    },
+    [[canvas]]
+  );
+  editor.load(
+    {
+      format: "obj",
+      fileSrc: "football/model3.obj",
+      textureImageArrays: [
+        [
+          {
+            backgroundColor: "blue",
+          },
+        ],
+      ],
+      position: [50, -140, 0],
     },
     [[canvas]]
   );

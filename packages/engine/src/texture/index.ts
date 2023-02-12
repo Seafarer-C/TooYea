@@ -1,12 +1,13 @@
 import * as THREE from "three";
 import { EVENTS, TooyeaEmit } from "../constants";
 import { TooyeaCanvasOperator } from "../canvas";
+import { ITooyeaTextureImages } from "@tooyea/types";
 
 export interface ITooyeaMeshTexture {}
 
 export class TooyeaMeshTexture implements ITooyeaMeshTexture {
-  constructor({ textureSrc, emit, canvasEl }) {
-    this.textureSrc = textureSrc;
+  constructor({ textureImages, emit, canvasEl }) {
+    this.textureImages = textureImages;
     this.emit = emit;
     this.canvasEl = canvasEl;
   }
@@ -17,15 +18,16 @@ export class TooyeaMeshTexture implements ITooyeaMeshTexture {
   materialIndexs: number[] = [];
 
   canvasEl: string | HTMLElement;
-  // 贴图底图src
-  textureSrc: string;
+  // 贴图图片资源
+  textureImages: ITooyeaTextureImages;
+
   private texture: THREE.CanvasTexture;
 
   canvasInit: boolean = false;
   async initCanvas() {
     return new Promise((resolve, reject) => {
       this.canvasOperator
-        .initBackground()
+        .initCanvasImages()
         .then(() => {
           this.canvasInit = true;
           resolve(true);
@@ -41,7 +43,7 @@ export class TooyeaMeshTexture implements ITooyeaMeshTexture {
       // 初始化创建 canvas 操作对象
       this.canvasOperator = new TooyeaCanvasOperator({
         el: this.canvasEl,
-        backgroundImageSrc: this.textureSrc,
+        images: this.textureImages,
         updateCanvas: this.update,
       });
       this.texture = new THREE.CanvasTexture(
@@ -76,6 +78,6 @@ export class TooyeaMeshTexture implements ITooyeaMeshTexture {
     console.log("更新", this.texture);
     setTimeout(() => {
       this.emit(EVENTS.RENDER);
-    }, 10);
+    }, 0);
   };
 }
