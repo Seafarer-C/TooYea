@@ -65,7 +65,7 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
   initCamera() {
     const width = window.innerWidth; //窗口宽度
     const height = window.innerHeight; //窗口高度
-    const k = width / height; //窗口宽高比
+    const k = 1; // width / height; //窗口宽高比
     const s = 200; //三维场景缩放系数
     //创建相机对象
     // this.camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
@@ -164,7 +164,10 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
   //#endregion
 
   // 执行渲染
-  mount(el: HTMLElement | string) {
+  mount(
+    el: HTMLElement | string,
+    { width, height }: { width: number; height: number }
+  ) {
     if (typeof el === "string") {
       this.el = document.getElementById(el);
     } else {
@@ -175,8 +178,6 @@ export class TooyeaEditor<T extends TooyeaEditorOptions> {
       antialias: true,
     });
 
-    const width = window.innerWidth; //窗口宽度
-    const height = window.innerHeight; //窗口高度
     this.renderer.setSize(width, height);
     // 加载天空盒
     // const textureLoader = new THREE.CubeTextureLoader();

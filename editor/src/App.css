@@ -1,0 +1,33 @@
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.App {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#all-canvas {
+  height: 100vh;
+  overflow-y: auto;
+  width: 500px;
+  background-color: #fff;
+}
+.canvas-container {
+  width: 500px !important;
+  height: 500px !important;
+}
+.canvas-container canvas {
+  width: 500px !important;
+  height: 500px !important;
+}
+
+.ThreeContainer {
+  margin: 0;
+}

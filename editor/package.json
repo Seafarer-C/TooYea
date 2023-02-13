@@ -5,19 +5,23 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.45",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "three": "0.148.0",
-    "@tooyea/engine": "workspace: *"
+    "@douyinfe/semi-ui": "^2.29.0",
+    "@douyinfe/semi-icons": "^2.29.0",
+    "@tooyea/engine": "workspace:*"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.0.0",
-    "typescript": "^4.9.3",
-    "vite": "^4.0.0",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react-swc": "^3.0.0",
     "@types/three": "0.148.0",
-    "vue-tsc": "^1.0.11"
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0"
   }
 }
