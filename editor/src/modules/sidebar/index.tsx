@@ -1,10 +1,15 @@
-import { Tabs, TabPane } from "@douyinfe/semi-ui";
+import { Tabs, TabPane, Empty } from "@douyinfe/semi-ui";
 import { IconShoppingBag, IconColorPalette } from "@douyinfe/semi-icons";
-import "./index.css";
+import "./index.less";
+import { DesignModule } from "../design";
 
-export function SideBar() {
+interface SideBarProps {
+  className?: string;
+}
+
+export function SideBar({ className }: SideBarProps) {
   return (
-    <Tabs className="side-bar" type="card">
+    <Tabs className={`side-bar ${className}`} defaultActiveKey={"2"}>
       <TabPane
         tab={
           <div className="tab-card">
@@ -14,7 +19,10 @@ export function SideBar() {
         }
         itemKey="1"
       >
-        商品
+        <Empty
+          title={"功能建设中"}
+          description="当前功能暂未开放，敬请期待。"
+        />
       </TabPane>
       <TabPane
         tab={
@@ -25,7 +33,7 @@ export function SideBar() {
         }
         itemKey="2"
       >
-        设计
+        <DesignModule />
       </TabPane>
     </Tabs>
   );

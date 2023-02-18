@@ -1,0 +1,51 @@
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@nav-height: 56px;
+@app-margin: 12px;
+
+.Nav {
+  height: @nav-height;
+}
+
+.App {
+  margin-left: @app-margin;
+  margin-top: @app-margin;
+  width: calc(100vw - (@app-margin * 2));
+  height: calc(100vh - @nav-height - (@app-margin * 2));
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.SideBar {
+  flex: 0 0 400px;
+}
+
+.CanvasOperator {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.canvas-container {
+  width: 500px !important;
+  height: 500px !important;
+}
+.canvas-container canvas {
+  width: 500px !important;
+  height: 500px !important;
+}
+
+.right-panel {
+  flex: 0 0 420px;
+}
+.three-container {
+  border-radius: 20px;
+}

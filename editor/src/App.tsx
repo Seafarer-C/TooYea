@@ -1,16 +1,19 @@
 import { useState, useRef, useEffect } from "react";
-import "./App.css";
+import "./App.less";
 import { editor } from "./editor";
-import { Card, Toast } from "@douyinfe/semi-ui";
+import { Toast } from "@douyinfe/semi-ui";
+import { Nav } from "./components/nav";
 
 import { SideBar } from "./modules/sidebar";
+import { CanvasOperator } from "./modules/canvas-operator";
+import { RightPanel } from "./modules/right-panel";
 
 function App() {
   useEffect(() => {
     (async () => {
       editor.mount("webgl", {
-        width: 600,
-        height: 600,
+        width: 400,
+        height: 400,
       });
       const { meshes, meshTextures } = await editor.load(
         {
@@ -20,11 +23,11 @@ function App() {
             [
               {
                 overlayImageSrc: "football/top.png",
-                backgroundColor: "#67111a",
+                backgroundColor: "#ff6a1f",
               },
             ],
           ],
-          position: [50, -70, 0],
+          position: [0, -80, -30],
         },
         [["all-canvas"]]
       );
@@ -36,29 +39,15 @@ function App() {
             [
               {
                 overlayImageSrc: "kuzi/top.png",
-                backgroundColor: "#67111a",
+                backgroundColor: "#ff6a1f",
               },
             ],
           ],
-          position: [50, -95, 0],
+          position: [0, -100, -30],
         },
-        [["all-canvas"]]
+        [["all-canvas2"]]
       );
-      editor.load(
-        {
-          format: "obj",
-          fileSrc: "football/model3.obj",
-          textureImageArrays: [
-            [
-              {
-                backgroundColor: "#67111a",
-              },
-            ],
-          ],
-          position: [50, -140, 0],
-        },
-        [["all-canvas"]]
-      );
+
       const operator = meshTextures[0].getCanvasOperator();
       operator?.addImage("logo/Cleveland_Cavaliers.png");
       Toast.success({ content: "welcome" });
@@ -66,18 +55,17 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <SideBar />
-      <div id="all-canvas"></div>
-      <Card>
-        <canvas
-          id="webgl"
-          width="1000"
-          height="1000"
-          className="ThreeContainer"
-        />
-      </Card>
-    </div>
+    <>
+      <Nav className="Nav" />
+      <div className="App">
+        <SideBar className="SideBar" />
+        <CanvasOperator className="CanvasOperator" />
+        <RightPanel
+          className="right-panel"
+          modelScene={<canvas id="webgl" className="three-container" />}
+        ></RightPanel>
+      </div>
+    </>
   );
 }
 
