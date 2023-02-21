@@ -8,7 +8,13 @@ import { SideBar } from "./modules/sidebar";
 import { CanvasOperator } from "./modules/canvas-operator";
 import { RightPanel } from "./modules/right-panel";
 
+import { storesContext } from "./store";
+import { useLocalStore } from "mobx-react";
+import { publicStores } from "./store/hooks";
+
 function App() {
+  const usedStore = useLocalStore(() => publicStores());
+
   useEffect(() => {
     (async () => {
       editor.mount("webgl", {
@@ -55,7 +61,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <storesContext.Provider value={usedStore}>
       <Nav className="Nav" />
       <div className="App">
         <SideBar className="SideBar" />
@@ -65,7 +71,7 @@ function App() {
           modelScene={<canvas id="webgl" className="three-container" />}
         ></RightPanel>
       </div>
-    </>
+    </storesContext.Provider>
   );
 }
 
