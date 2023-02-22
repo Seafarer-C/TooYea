@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 import { StoreContext } from "./hooks";
-import { IStateOperator, StateConfig } from "./model";
+import { IStateOperator } from "./model";
+import { StateConfig, defaultState } from "../editor/state";
 
 function reducer(state: StateConfig, action: IStateOperator) {
   return {
@@ -10,7 +11,7 @@ function reducer(state: StateConfig, action: IStateOperator) {
 }
 
 export function ContextProvider({ children }: { children: JSX.Element }) {
-  const [state, dispatch] = useReducer(reducer, new StateConfig());
+  const [state, dispatch] = useReducer(reducer, defaultState);
   const value = {
     state,
     dispatch,

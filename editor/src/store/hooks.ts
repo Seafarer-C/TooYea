@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
-import { StateConfig, IStateOperator } from "./model";
+import { IStateOperator } from "./model";
+import { StateConfig } from "../editor/state";
 
 export const StoreContext = createContext({
   state: new StateConfig(),

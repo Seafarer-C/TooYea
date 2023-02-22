@@ -7,6 +7,6 @@ export class ObjLoader extends TooyeaLoader<StateConfig> {
   format = "obj";
 
   loadHandle = (group: THREE.Group) => {
-    console.log(group);
+    console.log(group, this.state);
   };
 }

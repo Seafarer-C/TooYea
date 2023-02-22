@@ -6,9 +6,11 @@ export function DesignModule() {
   const { state, dispatch } = useStore();
   return (
     <>
-      {state.count}
+      {state.numberOfMesh}
       <Button
-        onClick={() => dispatch({ key: "count", value: state.count + 1 })}
+        onClick={() =>
+          dispatch({ key: "numberOfMesh", value: state.numberOfMesh + 1 })
+        }
       >
         add
       </Button>
