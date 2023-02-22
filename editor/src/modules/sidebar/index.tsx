@@ -2,14 +2,14 @@ import { Tabs, TabPane, Empty, Button } from "@douyinfe/semi-ui";
 import { IconShoppingBag, IconColorPalette } from "@douyinfe/semi-icons";
 import "./index.less";
 import { DesignModule } from "../design";
-import { useStores } from "../../store/hooks";
+import { useState } from "react";
 
 interface SideBarProps {
   className?: string;
 }
 
 export function SideBar({ className }: SideBarProps) {
-  const { counterStore } = useStores();
+  const [state, setState] = useState({ count: 1 });
   return (
     <Tabs className={`side-bar ${className}`} defaultActiveKey={"2"}>
       <TabPane
@@ -35,8 +35,6 @@ export function SideBar({ className }: SideBarProps) {
         }
         itemKey="2"
       >
-        {counterStore.counter}
-        <Button onClick={counterStore.add}>add</Button>
         <DesignModule />
       </TabPane>
     </Tabs>

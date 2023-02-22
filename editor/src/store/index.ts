@@ -1,2 +1,2 @@
-import React from "react";
-export const storesContext = React.createContext({});
+export { ContextProvider } from "./provide";
+export * from "./hooks";

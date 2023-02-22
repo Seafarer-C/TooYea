@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "@semi-bot/semi-theme-tooyea/semi.min.css";
 import "./index.css";
+import { ContextProvider } from "./store";
 
 // const body = document.body;
 // if (body.hasAttribute("theme-mode")) {
@@ -13,6 +14,8 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
-  <App />
+  <ContextProvider>
+    <App />
+  </ContextProvider>
   // </React.StrictMode>
 );

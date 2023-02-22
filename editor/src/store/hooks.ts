@@ -1,11 +1,9 @@
-import React from "react";
-import { storesContext } from "./index";
-import { CounterStore } from "./counter";
+import { createContext, useContext } from "react";
+import { StateConfig, IStateOperator } from "./model";
 
-export const useStores = (): any => React.useContext(storesContext);
-
-const counterStore = new CounterStore();
-export const publicStores = () => ({
-  // 各个模块的store分别引入
-  counterStore,
+export const StoreContext = createContext({
+  state: new StateConfig(),
+  dispatch: (_: IStateOperator) => {},
 });
+
+export const useStore = () => useContext(StoreContext);

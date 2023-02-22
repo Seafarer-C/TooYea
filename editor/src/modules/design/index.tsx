@@ -1,9 +1,17 @@
-import { Collapse } from "@douyinfe/semi-ui";
+import { Collapse, Button } from "@douyinfe/semi-ui";
 import { IconComponent } from "@douyinfe/semi-icons";
+import { useStore } from "../../store";
 
 export function DesignModule() {
+  const { state, dispatch } = useStore();
   return (
     <>
+      {state.count}
+      <Button
+        onClick={() => dispatch({ key: "count", value: state.count + 1 })}
+      >
+        add
+      </Button>
       <Collapse keepDOM defaultActiveKey={["1", "2"]}>
         <Collapse.Panel
           header={
