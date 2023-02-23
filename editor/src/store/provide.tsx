@@ -1,6 +1,5 @@
 import { useReducer } from "react";
-import { StoreContext } from "./hooks";
-import { IStateOperator } from "./model";
+import { StoreContext, IStateOperator } from "./hooks";
 import { StateConfig, defaultState } from "../editor/state";
 
 function reducer(state: StateConfig, action: IStateOperator) {
