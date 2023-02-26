@@ -1,4 +1,5 @@
-import { Tabs, TabPane } from "@douyinfe/semi-ui";
+import { Tabs, TabPane, Card } from "@douyinfe/semi-ui";
+import { ToolsBar } from "./tools";
 import "./index.less";
 
 interface CanvasOperatorProps {
@@ -7,13 +8,16 @@ interface CanvasOperatorProps {
 
 export function CanvasOperator({ className }: CanvasOperatorProps) {
   return (
-    <Tabs type="line" className={`canvas-operator ${className}`}>
-      <TabPane tab={<div className="tab-card">上衣</div>} itemKey="1">
-        <div id="all-canvas" className="canvas-panel"></div>
-      </TabPane>
-      <TabPane tab={<div className="tab-card">裤子</div>} itemKey="2">
-        <div id="all-canvas2" className="canvas-panel"></div>
-      </TabPane>
-    </Tabs>
+    <div className={className}>
+      <Tabs type="line" className="canvas-operator">
+        <TabPane tab={<div className="tab-card">上衣</div>} itemKey="1">
+          <div id="all-canvas" className="canvas-panel" />
+        </TabPane>
+        <TabPane tab={<div className="tab-card">裤子</div>} itemKey="2">
+          <div id="all-canvas2" className="canvas-panel" />
+        </TabPane>
+      </Tabs>
+      <ToolsBar className="canvas-tools" />
+    </div>
   );
 }

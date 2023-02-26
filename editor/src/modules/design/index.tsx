@@ -1,6 +1,6 @@
 import { Collapse, Button } from "@douyinfe/semi-ui";
 import { IconComponent, IconImage, IconText } from "@douyinfe/semi-icons";
-import { useStore } from "../../store";
+import { useStore } from "@/store";
 import "./index.less";
 
 // 模块类型
@@ -15,7 +15,9 @@ interface ICollapseItem {
 
 // 设计工具面板
 export function DesignModule() {
-  const { state, dispatch } = useStore();
+  const { state, actions } = useStore();
+  const { numberOfMesh } = state;
+  const { setNumberOfMesh } = actions;
 
   const collapseItems: ICollapseItem[] = [
     {
@@ -50,8 +52,14 @@ export function DesignModule() {
               </span>
             }
             itemKey={item.key}
+            key={item.key}
           >
-            <>{item.panel}</>
+            <>
+              <Button onClick={() => setNumberOfMesh(numberOfMesh + 1)}>
+                {`numberOfMesh: ${numberOfMesh}`}
+              </Button>
+              {item.panel}
+            </>
           </Collapse.Panel>
         ))}
       </Collapse>
