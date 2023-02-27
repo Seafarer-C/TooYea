@@ -49,7 +49,12 @@ function App() {
       );
 
       const operator = meshTextures[0].getCanvasOperator();
-      operator?.addImage("logo/Cleveland_Cavaliers.png");
+      await operator?.addImage("logo/Cleveland_Cavaliers.png");
+      operator?.copy(operator.elements[0]);
+      setTimeout(() => {
+        operator?.copy(operator.elements[1]);
+      }, 100);
+
       Toast.success({ content: "welcome" });
     })();
   }, []);

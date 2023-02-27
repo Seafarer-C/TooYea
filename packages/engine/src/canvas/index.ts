@@ -21,7 +21,7 @@ export class TooyeaCanvasOperator {
       console.log("mouse:up事件：", options);
       updateCanvas();
     });
-    this.images = images;
+    this.baseImages = images;
     this.updateCanvas = updateCanvas;
   }
 
@@ -32,16 +32,93 @@ export class TooyeaCanvasOperator {
   canvasDom: HTMLCanvasElement = document.createElement("canvas");
   // fabric canvas对象
   fabricCanvas: fabric.Canvas;
-  // 图片资源地址
-  images: ITooyeaTextureImages;
+  // 静态图片资源地址
+  baseImages: ITooyeaTextureImages;
+  // 画布上的素材资源
+  elements: fabric.Object[] = [];
+  // 当前操作的元素
+  activeElement: fabric.Object;
 
   widgets = [];
   updateCanvas: Function;
 
+  // #region 复制粘贴
+  private _paste(
+    clipboard: fabric.Object,
+    offset: {
+      x: number;
+      y: number;
+    } = { x: 20, y: 20 }
+  ) {
+    clipboard.clone((clonedObj) => {
+      this.fabricCanvas.discardActiveObject();
+      clonedObj.set({
+        left: clonedObj.left + offset.x,
+        top: clonedObj.top + offset.y,
+        evented: true,
+      });
+      if (clonedObj.type === "activeSelection") {
+        // active selection needs a reference to the canvas.
+        clonedObj.canvas = this.fabricCanvas;
+        clonedObj.forEachObject((obj) => {
+          this.fabricCanvas.add(obj);
+        });
+        // this should solve the unselectability
+        clonedObj.setCoords();
+      } else {
+        this.fabricCanvas.add(clonedObj);
+      }
+      clipboard.top += offset.x;
+      clipboard.left += offset.y;
+      this.fabricCanvas.setActiveObject(clonedObj);
+    });
+  }
+
+  paste(
+    clipboard: fabric.Object,
+    offset: {
+      x: number;
+      y: number;
+    } = { x: 20, y: 20 }
+  ) {
+    clipboard.clone((clonedObj) => {
+      this.fabricCanvas.discardActiveObject();
+      clonedObj.set({
+        left: clonedObj.left + offset.x,
+        top: clonedObj.top + offset.y,
+        evented: true,
+      });
+      if (clonedObj.type === "activeSelection") {
+        // active selection needs a reference to the canvas.
+        clonedObj.canvas = this.fabricCanvas;
+        clonedObj.forEachObject((obj) => {
+          this.fabricCanvas.add(obj);
+        });
+        // this should solve the unselectability
+        clonedObj.setCoords();
+      } else {
+        this.fabricCanvas.add(clonedObj);
+      }
+      clipboard.top += offset.x;
+      clipboard.left += offset.y;
+      this.fabricCanvas.setActiveObject(clonedObj);
+      this.elements.push(clonedObj);
+      this.updateCanvas();
+    });
+  }
+
+  copy(target: fabric.Object = this.fabricCanvas.getActiveObject()) {
+    console.log(target);
+    target.clone((cloned) => {
+      this.paste(cloned);
+    });
+  }
+  // #endregion
+
   // 初始化图片资源
   async initCanvasImages() {
     const { overlayImageSrc, backgroundColor, backgroundImageSrc } =
-      this.images;
+      this.baseImages;
     if (overlayImageSrc) {
       const overlayImg = await asyncGetImageFromURL(overlayImageSrc);
       this.fabricCanvas.setWidth(overlayImg.width, {
@@ -73,13 +150,22 @@ export class TooyeaCanvasOperator {
   // 往画布上新增图片
   async addImage(imgSrc: string) {
     const image = await asyncGetImageFromURL(imgSrc);
+    this.elements.push(image);
+
     image.on("moving", (options) => {
       console.log("image moving事件：", options);
       this.updateCanvas();
     });
+
     this.fabricCanvas.add(image);
     this.updateCanvas();
   }
+
+  // 将图片设置成平铺的组
+  createTiledGroupFromImage(
+    targetImage: fabric.Object = this.activeElement,
+    options
+  ) {}
 
   // 设置背景图
   async setBackgroundImage(imgSrc: string) {
