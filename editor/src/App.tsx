@@ -49,11 +49,13 @@ function App() {
       );
 
       const operator = meshTextures[0].getCanvasOperator();
-      await operator?.addImage("logo/Cleveland_Cavaliers.png");
-      operator?.copy(operator.elements[0]);
-      setTimeout(() => {
-        operator?.copy(operator.elements[1]);
-      }, 100);
+      await operator?.addImage("vite.svg");
+      operator?.createRepeatGroupFromElement(operator.elements[0], {
+        rowGap: 40,
+        columnGap: 40,
+        rowNumber: 20,
+        columnNumber: 10,
+      });
 
       Toast.success({ content: "welcome" });
     })();

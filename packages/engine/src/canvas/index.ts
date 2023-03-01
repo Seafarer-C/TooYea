@@ -1,5 +1,7 @@
 import { ITooyeaTextureImages } from "@tooyea/types";
 import { fabric } from "fabric";
+import { TooyeaRepeatGroup } from "./elements/repeat-group";
+import { asyncGetImageFromURL, asyncClone } from "./utils/index";
 
 export class TooyeaCanvasOperator {
   constructor({
@@ -43,72 +45,50 @@ export class TooyeaCanvasOperator {
   updateCanvas: Function;
 
   // #region 复制粘贴
-  private _paste(
+  private async _paste(
     clipboard: fabric.Object,
     offset: {
       x: number;
       y: number;
-    } = { x: 20, y: 20 }
-  ) {
-    clipboard.clone((clonedObj) => {
-      this.fabricCanvas.discardActiveObject();
-      clonedObj.set({
-        left: clonedObj.left + offset.x,
-        top: clonedObj.top + offset.y,
-        evented: true,
-      });
-      if (clonedObj.type === "activeSelection") {
-        // active selection needs a reference to the canvas.
-        clonedObj.canvas = this.fabricCanvas;
-        clonedObj.forEachObject((obj) => {
-          this.fabricCanvas.add(obj);
-        });
-        // this should solve the unselectability
-        clonedObj.setCoords();
-      } else {
-        this.fabricCanvas.add(clonedObj);
-      }
-      clipboard.top += offset.x;
-      clipboard.left += offset.y;
-      this.fabricCanvas.setActiveObject(clonedObj);
+    }
+  ): Promise<fabric.Object> {
+    const clonedObj = await asyncClone(clipboard);
+    clonedObj.set({
+      left: clonedObj.left + offset.x,
+      top: clonedObj.top + offset.y,
+      evented: true,
     });
+    if (clonedObj.type === "activeSelection") {
+      // active selection needs a reference to the canvas.
+      clonedObj.canvas = this.fabricCanvas;
+      // this should solve the unselectability
+      clonedObj.setCoords();
+    }
+    return clonedObj;
   }
 
-  paste(
+  async paste(
     clipboard: fabric.Object,
     offset: {
       x: number;
       y: number;
     } = { x: 20, y: 20 }
-  ) {
-    clipboard.clone((clonedObj) => {
-      this.fabricCanvas.discardActiveObject();
-      clonedObj.set({
-        left: clonedObj.left + offset.x,
-        top: clonedObj.top + offset.y,
-        evented: true,
+  ): Promise<fabric.Object> {
+    const clonedObj = await this._paste(clipboard, offset);
+    this.fabricCanvas.setActiveObject(clonedObj);
+    if (clonedObj.type === "activeSelection") {
+      // @ts-ignore
+      clonedObj.forEachObject((obj) => {
+        this.fabricCanvas.add(obj);
       });
-      if (clonedObj.type === "activeSelection") {
-        // active selection needs a reference to the canvas.
-        clonedObj.canvas = this.fabricCanvas;
-        clonedObj.forEachObject((obj) => {
-          this.fabricCanvas.add(obj);
-        });
-        // this should solve the unselectability
-        clonedObj.setCoords();
-      } else {
-        this.fabricCanvas.add(clonedObj);
-      }
-      clipboard.top += offset.x;
-      clipboard.left += offset.y;
-      this.fabricCanvas.setActiveObject(clonedObj);
-      this.elements.push(clonedObj);
-      this.updateCanvas();
-    });
+    } else {
+      this.fabricCanvas.add(clonedObj);
+    }
+    this.updateCanvas();
+    return clonedObj;
   }
 
   copy(target: fabric.Object = this.fabricCanvas.getActiveObject()) {
-    console.log(target);
     target.clone((cloned) => {
       this.paste(cloned);
     });
@@ -153,7 +133,12 @@ export class TooyeaCanvasOperator {
     this.elements.push(image);
 
     image.on("moving", (options) => {
-      console.log("image moving事件：", options);
+      this.updateCanvas();
+    });
+    image.on("scaling", (options) => {
+      this.updateCanvas();
+    });
+    image.on("rotating", (options) => {
       this.updateCanvas();
     });
 
@@ -162,10 +147,26 @@ export class TooyeaCanvasOperator {
   }
 
   // 将图片设置成平铺的组
-  createTiledGroupFromImage(
-    targetImage: fabric.Object = this.activeElement,
-    options
-  ) {}
+  async createRepeatGroupFromElement(
+    targetImage: fabric.Object = this.fabricCanvas.getActiveObject(),
+    options?: {
+      rowGap: number;
+      columnGap: number;
+      rowNumber: number;
+      columnNumber: number;
+    }
+  ) {
+    const repeatGroup = new TooyeaRepeatGroup(
+      targetImage,
+      options,
+      this.updateCanvas.bind(this),
+      this._paste.bind(this)
+    );
+    await repeatGroup.initGroup();
+    this.fabricCanvas.add(repeatGroup.group);
+    this.fabricCanvas.remove(targetImage);
+    this.updateCanvas();
+  }
 
   // 设置背景图
   async setBackgroundImage(imgSrc: string) {
@@ -183,23 +184,6 @@ export class TooyeaCanvasOperator {
       this.fabricCanvas.renderAll.bind(this.fabricCanvas)
     );
   }
-}
-
-// 根据图片 URL 获取图片资源
-async function asyncGetImageFromURL(imgSrc: string): Promise<fabric.Image> {
-  return new Promise((resolve, reject) => {
-    fabric.Image.fromURL(imgSrc, (img) => {
-      try {
-        img.set({
-          originX: "left",
-          originY: "top",
-        });
-        resolve(img);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  });
 }
 
 // 背景图转前景图
