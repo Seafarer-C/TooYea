@@ -16,9 +16,9 @@ interface ICollapseItem {
 
 // 设计工具面板
 export function DesignModule() {
-  const { state, actions } = useStore();
-  const { numberOfMesh } = state;
-  const { setNumberOfMesh } = actions;
+  const { store, actions } = useStore();
+  const { numberOfMesh } = store.editor;
+  const { setNumberOfMesh } = actions.editor;
 
   const collapseItems: ICollapseItem[] = [
     {
@@ -49,7 +49,7 @@ export function DesignModule() {
 
   return (
     <>
-      <Collapse keepDOM defaultActiveKey={["image"]}>
+      <Collapse keepDOM defaultActiveKey={["image", "text"]}>
         {collapseItems.map((item) => (
           <Collapse.Panel
             header={

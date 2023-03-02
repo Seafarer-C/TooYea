@@ -1,18 +1,18 @@
 import { createContext, useContext } from "react";
-import { EditorStateConfig } from "@/editor/state";
-
+import { StoreConfig, defaultStore } from "./modules";
 export interface IStateOperator {
+  module: keyof StoreConfig;
   key: string;
   value: any;
 }
 type ActionName<T extends string> = `set${Capitalize<T>}`;
-export type ActionNameType = ActionName<keyof EditorStateConfig>;
-export type StoreAction = { [k in ActionNameType]: (value: any) => void };
+export type ActionNameType<E> = ActionName<keyof E>;
+export type StoreAction<T> = { [k in ActionNameType<T>]: (value: any) => void };
 
 export const StoreContext = createContext({
-  state: new EditorStateConfig(),
+  store: defaultStore as StoreConfig,
   dispatch: (_: IStateOperator) => {},
-  actions: {} as StoreAction,
+  actions: {} as { [k in keyof StoreConfig]: StoreAction<StoreConfig[k]> },
 });
 
 export const useStore = () => useContext(StoreContext);
