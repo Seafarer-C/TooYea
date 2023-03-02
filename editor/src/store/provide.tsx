@@ -1,9 +1,9 @@
 import { useReducer } from "react";
 import { StoreContext, IStateOperator } from "./hooks";
 import type { ActionNameType, StoreAction } from "./hooks";
-import { StateConfig, defaultState } from "@/editor/state";
+import { EditorStateConfig, defaultState } from "@/editor/state";
 
-function reducer(state: StateConfig, action: IStateOperator) {
+function reducer(state: EditorStateConfig, action: IStateOperator) {
   return {
     ...state,
     [action.key]: action.value,
@@ -15,7 +15,7 @@ export function ContextProvider({ children }: { children: JSX.Element }) {
   const actions = Object.fromEntries(
     Object.keys(defaultState).map((v) => [
       `set${v.charAt(0).toUpperCase() + v.slice(1)}` as ActionNameType,
-      (value) => {
+      (value: any) => {
         dispatch({ key: v, value });
       },
     ])

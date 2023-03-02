@@ -2,6 +2,7 @@ import { Collapse, Button } from "@douyinfe/semi-ui";
 import { IconComponent, IconImage, IconText } from "@douyinfe/semi-icons";
 import { useStore } from "@/store";
 import "./index.less";
+import { ImageDesign } from "./image/index";
 
 // 模块类型
 type CollapseType = "style" | "image" | "text";
@@ -30,19 +31,25 @@ export function DesignModule() {
       icon: <IconImage />,
       title: "图片素材",
       key: "image",
-      panel: <></>,
+      panel: <ImageDesign />,
     },
     {
       icon: <IconText />,
       title: "文字素材",
       key: "text",
-      panel: <></>,
+      panel: (
+        <>
+          <Button onClick={() => setNumberOfMesh(numberOfMesh + 1)}>
+            {`numberOfMesh: ${numberOfMesh}`}
+          </Button>
+        </>
+      ),
     },
   ];
 
   return (
     <>
-      <Collapse keepDOM defaultActiveKey={["style"]}>
+      <Collapse keepDOM defaultActiveKey={["image"]}>
         {collapseItems.map((item) => (
           <Collapse.Panel
             header={
@@ -54,12 +61,7 @@ export function DesignModule() {
             itemKey={item.key}
             key={item.key}
           >
-            <>
-              <Button onClick={() => setNumberOfMesh(numberOfMesh + 1)}>
-                {`numberOfMesh: ${numberOfMesh}`}
-              </Button>
-              {item.panel}
-            </>
+            <>{item.panel}</>
           </Collapse.Panel>
         ))}
       </Collapse>
