@@ -128,8 +128,8 @@ export class TooyeaCanvasOperator {
   }
 
   // 往画布上新增图片
-  async addImage(imgSrc: string) {
-    const image = await asyncGetImageFromURL(imgSrc);
+  async addImage(imgSource: string) {
+    const image = await asyncGetImageFromURL(imgSource);
     this.elements.push(image);
 
     image.on("moving", (options) => {
@@ -148,7 +148,7 @@ export class TooyeaCanvasOperator {
 
   // 将图片设置成平铺的组
   async createRepeatGroupFromElement(
-    targetImage: fabric.Object = this.fabricCanvas.getActiveObject(),
+    targetElement: fabric.Object = this.fabricCanvas.getActiveObject(),
     options?: {
       rowGap: number;
       columnGap: number;
@@ -157,14 +157,14 @@ export class TooyeaCanvasOperator {
     }
   ) {
     const repeatGroup = new TooyeaRepeatGroup(
-      targetImage,
+      targetElement,
       options,
       this.updateCanvas.bind(this),
       this._paste.bind(this)
     );
     await repeatGroup.initGroup();
     this.fabricCanvas.add(repeatGroup.group);
-    this.fabricCanvas.remove(targetImage);
+    this.fabricCanvas.remove(targetElement);
     this.updateCanvas();
   }
 
