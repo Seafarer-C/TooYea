@@ -1,14 +1,14 @@
-import { useEffect } from "react";
-import "./App.less";
 import { editor, initEditor } from "@/editor";
+import { useStore } from "@/store";
 import { Toast } from "@douyinfe/semi-ui";
-import { Nav } from "./components/nav";
+import { useEffect } from "react";
 
-import { SideBar } from "./modules/sidebar";
-import { CanvasOperator } from "./modules/canvas-operator";
-import { RightPanel } from "./modules/right-panel";
+export const useInit = async () => {
+  const { store, actions } = useStore();
+  //   const { meshTextures, currentOperator } = store.common;
+  const { setMeshTextures, setCurrentOperator, setCurrentElements } =
+    actions.common;
 
-function App() {
   useEffect(() => {
     (async () => {
       editor.mount("webgl", {
@@ -47,35 +47,24 @@ function App() {
         ],
         ["tooyea-canvas", "tooyea-canvas2"]
       );
-
-      const { meshTextures } = res[0];
-
-      const operator = meshTextures[0].getCanvasOperator();
+      const mts = res.map((v) => v.meshTextures);
+      const operator = mts[0][0].getCanvasOperator();
       await operator?.addImage("vite.svg");
-      operator?.createRepeatGroupFromElement(operator.elements[0], {
-        rowGap: 40,
-        columnGap: 40,
-        rowNumber: 20,
-        columnNumber: 10,
-      });
+      await operator?.addImage("react.svg");
+      //   operator?.createRepeatGroupFromElement(operator.elements[0], {
+      //     rowGap: 40,
+      //     columnGap: 40,
+      //     rowNumber: 20,
+      //     columnNumber: 10,
+      //   });
+
+      setMeshTextures(mts);
+      setCurrentOperator(operator);
+      setCurrentElements(operator!.elements);
+
+      //   operator?.setBackgroundColor("#aaaaff");
 
       Toast.success({ content: "welcome" });
     })();
   }, []);
-
-  return (
-    <>
-      <Nav className="Nav" />
-      <div className="App">
-        <SideBar className="SideBar" />
-        <CanvasOperator className="CanvasOperator" />
-        <RightPanel
-          className="right-panel"
-          modelScene={<canvas id="webgl" className="three-container" />}
-        ></RightPanel>
-      </div>
-    </>
-  );
-}
-
-export default App;
+};

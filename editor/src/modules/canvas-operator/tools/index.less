@@ -1,19 +1,28 @@
-.tools-bar-content {
+.tools-bar-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+.tools-bar-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--semi-shadow-elevated);
+  border-radius: var(--semi-border-radius-large);
+}
+
 .tools-bar {
   background: #ffffff;
-  box-shadow: var(--semi-shadow-elevated);
   border-radius: var(--semi-border-radius-large);
 
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 4px 2px 16px 2px;
+  transition: all 0.2s ease-in-out;
 
   .tool-item {
     display: flex;
@@ -46,10 +55,9 @@
 
 .tools-bar-popover {
   background: #ffffff;
-  box-shadow: var(--semi-shadow-elevated);
+  margin-bottom: 4px;
+  padding: 6px;
   border-radius: var(--semi-border-radius-large);
-  margin-bottom: 8px;
-  padding: 12px;
 }
 
 .zoom-in-out-bar {

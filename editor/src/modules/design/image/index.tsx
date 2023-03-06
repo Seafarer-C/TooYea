@@ -28,10 +28,11 @@ export function ImageDesign() {
 
   return (
     <div className="design-panel-image">
-      {imgList.map((img) => (
+      {imgList.map((img, i) => (
         <img
           src={img.src}
           width={100}
+          key={"img__" + i}
           onClick={(e) => addImageToCurrentCanvas(e.target as HTMLImageElement)}
         />
       ))}

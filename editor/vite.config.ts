@@ -20,5 +20,9 @@ export default defineConfig(({ command }) => ({
         additionalDate: `@import ~@semi-bot/semi-theme-tooyea/scss/index.scss`,
       },
     },
+    modules: {
+      hashPrefix: "tooyea",
+      generateScopedName: "[name]_[local]_[hash:5]",
+    },
   },
 }));

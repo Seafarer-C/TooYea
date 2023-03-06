@@ -1,0 +1,26 @@
+.imageTool {
+}
+
+.imageInfoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 8px;
+  width: 300px;
+  border-radius: var(--semi-border-radius-large);
+  margin-bottom: 2px;
+  cursor: pointer;
+
+  span[role="img"] {
+    cursor: pointer;
+    margin: 0 4px;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    background-color: var(--semi-color-primary-light-default);
+  }
+}

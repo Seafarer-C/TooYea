@@ -15,6 +15,7 @@
     "@douyinfe/semi-ui": "^2.29.0",
     "@douyinfe/semi-icons": "^2.29.0",
     "@semi-bot/semi-theme-tooyea": "1.0.0",
+    "fabric": "5.3.0",
     "@tooyea/engine": "workspace:*",
     "@tooyea/types": "workspace:*"
   },

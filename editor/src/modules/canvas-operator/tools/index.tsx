@@ -1,4 +1,4 @@
-import { InputNumber, Button } from "@douyinfe/semi-ui";
+import { Input, Button } from "@douyinfe/semi-ui";
 import {
   IconPlus,
   IconMinus,
@@ -33,7 +33,7 @@ export function ToolsBar({ className }: ToolsBarProps) {
     setActiveToolKey(null);
     setPopover(<></>);
   }
-  // 工具数组
+  // 工具组
   const mainTools: Array<MainTool> = [
     {
       title: "图片",
@@ -87,25 +87,27 @@ export function ToolsBar({ className }: ToolsBarProps) {
   ];
 
   return (
-    <div className={`${className} tools-bar-content`}>
-      {popover}
-      <div className="tools-bar">
-        {mainTools.map(({ title, key, icon, onClick }) => (
-          <div
-            key={key}
-            onClick={onClick}
-            className={`tool-item ${
-              activeToolKey === key ? "tool-item_active" : ""
-            }`}
-          >
-            {icon}
-            <span className="tool-item_title">{title}</span>
-          </div>
-        ))}
+    <div className={`${className} tools-bar-wrapper`}>
+      <div className={`tools-bar-content`}>
+        {popover}
+        <div className="tools-bar">
+          {mainTools.map(({ title, key, icon, onClick }) => (
+            <div
+              key={key}
+              onClick={onClick}
+              className={`tool-item ${
+                activeToolKey === key ? "tool-item_active" : ""
+              }`}
+            >
+              {icon}
+              <span className="tool-item_title">{title}</span>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="zoom-in-out-bar">
         <Button size="small" icon={<IconMinus />} aria-label="缩小" />
-        <InputNumber size="small" style={{ margin: "0 10px", width: "70px" }} />
+        <Input size="small" style={{ margin: "0 10px", width: "60px" }} />
         <Button size="small" icon={<IconPlus />} aria-label="放大" />
       </div>
     </div>
