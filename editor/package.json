@@ -15,7 +15,8 @@
     "@douyinfe/semi-ui": "^2.29.0",
     "@douyinfe/semi-icons": "^2.29.0",
     "@semi-bot/semi-theme-tooyea": "1.0.0",
-    "@tooyea/engine": "workspace:*"
+    "@tooyea/engine": "workspace:*",
+    "@tooyea/types": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

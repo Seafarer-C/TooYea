@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect } from "react";
 import "./App.less";
-import { editor } from "./editor";
+import { editor, initEditor } from "@/editor";
 import { Toast } from "@douyinfe/semi-ui";
 import { Nav } from "./components/nav";
 
@@ -15,38 +15,40 @@ function App() {
         width: 400,
         height: 400,
       });
-      const { meshes, meshTextures } = await editor.load(
-        {
-          format: "obj",
-          fileSrc: "football/model2.obj",
-          textureImageArrays: [
-            [
-              {
-                overlayImageSrc: "football/top.png",
-                backgroundColor: "#ff6a1f",
-              },
+
+      const res = await initEditor(
+        [
+          {
+            format: "obj",
+            fileSrc: "football/model2.obj",
+            textureImageArrays: [
+              [
+                {
+                  overlayImageSrc: "football/top.png",
+                  backgroundColor: "#ff6a1f",
+                },
+              ],
             ],
-          ],
-          position: [0, -80, -30],
-        },
-        [["all-canvas"]]
-      );
-      editor.load(
-        {
-          format: "obj",
-          fileSrc: "kuzi/model.obj",
-          textureImageArrays: [
-            [
-              {
-                overlayImageSrc: "kuzi/top.png",
-                backgroundColor: "#ff6a1f",
-              },
+            position: [0, -80, -30],
+          },
+          {
+            format: "obj",
+            fileSrc: "kuzi/model.obj",
+            textureImageArrays: [
+              [
+                {
+                  overlayImageSrc: "kuzi/top.png",
+                  backgroundColor: "#ff6a1f",
+                },
+              ],
             ],
-          ],
-          position: [0, -100, -30],
-        },
-        [["all-canvas2"]]
+            position: [0, -100, -30],
+          },
+        ],
+        ["tooyea-canvas", "tooyea-canvas2"]
       );
+
+      const { meshTextures } = res[0];
 
       const operator = meshTextures[0].getCanvasOperator();
       await operator?.addImage("vite.svg");
