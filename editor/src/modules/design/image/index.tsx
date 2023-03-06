@@ -1,6 +1,11 @@
+import { useStore } from "@/store";
 import "./index.less";
 
 export function ImageDesign() {
+  const { store, actions } = useStore();
+  const { currentOperator } = store.common;
+  const { setCurrentElements } = actions.common;
+
   const imgList = [
     {
       src: "vite.svg",
@@ -22,8 +27,9 @@ export function ImageDesign() {
     },
   ];
 
-  function addImageToCurrentCanvas(img: HTMLImageElement) {
-    console.log(img);
+  function addImageToCurrentCanvas(imgSrc: string) {
+    currentOperator?.addImage(imgSrc);
+    setCurrentElements(currentOperator?.elements);
   }
 
   return (
@@ -33,7 +39,7 @@ export function ImageDesign() {
           src={img.src}
           width={100}
           key={"img__" + i}
-          onClick={(e) => addImageToCurrentCanvas(e.target as HTMLImageElement)}
+          onClick={(e) => addImageToCurrentCanvas(img.src)}
         />
       ))}
     </div>

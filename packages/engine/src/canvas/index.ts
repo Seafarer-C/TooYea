@@ -38,8 +38,6 @@ export class TooyeaCanvasOperator {
   baseImages: ITooyeaTextureImages;
   // 画布上的素材资源
   elements: fabric.Object[] = [];
-  // 当前操作的元素
-  activeElement: fabric.Object;
 
   widgets = [];
   updateCanvas: Function;

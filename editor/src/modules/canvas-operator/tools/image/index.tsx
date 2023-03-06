@@ -20,7 +20,7 @@ export function ImageTool() {
   }
 
   // 根据 img 平铺重复
-  function handleRepeat(target) {
+  function handleRepeat(target: fabric.Object) {
     currentOperator?.createRepeatGroupFromElement(target, {
       rowGap: 40,
       columnGap: 40,
@@ -31,12 +31,16 @@ export function ImageTool() {
 
   return (
     <div className={style.imageTool}>
-      {getImageList().map((img, i) => (
+      {getImageList().map(({ target, ...img }, i) => (
         <ImageInfoItem
           key={`ImageInfoItem__${i}`}
           {...img}
+          onClick={() => {
+            currentOperator!.fabricCanvas.absolutePan({ x: 0, y: 0 });
+            currentOperator!.fabricCanvas.setActiveObject(target);
+          }}
           onRepeatClick={() => {
-            handleRepeat(img.target);
+            handleRepeat(target);
           }}
         />
       ))}
@@ -44,14 +48,15 @@ export function ImageTool() {
   );
 }
 
-function ImageInfoItem({ src, width, height, onRepeatClick }) {
+function ImageInfoItem({ src, width, height, onClick, onRepeatClick }: any) {
   return (
-    <div className={style.imageInfoItem}>
+    <div className={style.imageInfoItem} onClick={onClick}>
       <div>
         <img src={src} alt="img" width="32" />
         <Tag size="small" color="blue" type="solid" shape="circle">
           平铺
         </Tag>
+        {`${width}px * ${height}px`}
       </div>
       <div>
         <Tooltip content={"平铺重复"}>

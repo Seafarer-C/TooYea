@@ -10,6 +10,7 @@ import {
 import "./index.less";
 import { useState } from "react";
 import { ImageTool } from "./image";
+import { PaintTool } from "./paint";
 
 interface ToolsBarProps {
   className?: string;
@@ -74,7 +75,7 @@ export function ToolsBar({ className }: ToolsBarProps) {
           clearPopover();
         } else {
           setActiveToolKey("text");
-          setPopover(<div className="tools-bar-popover">文本</div>);
+          setPopover(<div className="tools-bar-popover">暂未开放</div>);
         }
       },
     },
@@ -82,7 +83,14 @@ export function ToolsBar({ className }: ToolsBarProps) {
       title: "涂鸦",
       key: "paint",
       icon: <IconEditStroked />,
-      onClick: () => {},
+      onClick: () => {
+        if (activeToolKey === "paint") {
+          clearPopover();
+        } else {
+          setActiveToolKey("paint");
+          setPopover(<PaintTool />);
+        }
+      },
     },
   ];
 
