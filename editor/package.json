@@ -16,6 +16,7 @@
     "@douyinfe/semi-icons": "^2.29.0",
     "@semi-bot/semi-theme-tooyea": "1.0.0",
     "fabric": "5.3.0",
+    "react-color": "2.19.3",
     "@tooyea/engine": "workspace:*",
     "@tooyea/types": "workspace:*"
   },

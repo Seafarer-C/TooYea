@@ -3,7 +3,7 @@ import "./index.less";
 
 export function ImageDesign() {
   const { store, actions } = useStore();
-  const { currentOperator } = store.common;
+  const { currentOperator, currentElements } = store.common;
   const { setCurrentElements } = actions.common;
 
   const imgList = [
@@ -17,18 +17,12 @@ export function ImageDesign() {
       src: "react.svg",
     },
     {
-      src: "react.svg",
-    },
-    {
-      src: "vite.svg",
-    },
-    {
       src: "logo/Cleveland_Cavaliers.png",
     },
   ];
 
-  function addImageToCurrentCanvas(imgSrc: string) {
-    currentOperator?.addImage(imgSrc);
+  async function addImageToCurrentCanvas(imgSrc: string) {
+    await currentOperator?.addImage(imgSrc);
     setCurrentElements(currentOperator?.elements);
   }
 

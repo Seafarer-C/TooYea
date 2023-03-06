@@ -141,7 +141,9 @@ export class TooyeaCanvasOperator {
     });
 
     this.fabricCanvas.add(image);
-    this.updateCanvas();
+    setTimeout(() => {
+      this.updateCanvas();
+    }, 100);
   }
 
   // 将图片设置成平铺的组
@@ -181,6 +183,7 @@ export class TooyeaCanvasOperator {
       backgroundColor,
       this.fabricCanvas.renderAll.bind(this.fabricCanvas)
     );
+    this.updateCanvas();
   }
 }
 

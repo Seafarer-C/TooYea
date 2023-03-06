@@ -1,6 +1,5 @@
 import { Collapse, Button } from "@douyinfe/semi-ui";
 import { IconComponent, IconImage, IconText } from "@douyinfe/semi-icons";
-import { useStore } from "@/store";
 import "./index.less";
 import { ImageDesign } from "./image/index";
 
@@ -16,10 +15,6 @@ interface ICollapseItem {
 
 // 设计工具面板
 export function DesignModule() {
-  const { store, actions } = useStore();
-  const { numberOfMesh } = store.editor;
-  const { setNumberOfMesh } = actions.editor;
-
   const collapseItems: ICollapseItem[] = [
     {
       icon: <IconComponent />,
@@ -37,19 +32,13 @@ export function DesignModule() {
       icon: <IconText />,
       title: "文字素材",
       key: "text",
-      panel: (
-        <>
-          <Button onClick={() => setNumberOfMesh(numberOfMesh + 1)}>
-            {`numberOfMesh: ${numberOfMesh}`}
-          </Button>
-        </>
-      ),
+      panel: <></>,
     },
   ];
 
   return (
     <>
-      <Collapse keepDOM defaultActiveKey={["image", "text"]}>
+      <Collapse keepDOM defaultActiveKey={["image"]}>
         {collapseItems.map((item) => (
           <Collapse.Panel
             header={

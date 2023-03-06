@@ -1,7 +1,7 @@
 import { useStore } from "@/store";
 import style from "./index.module.less";
-import { IconApps, IconMore } from "@douyinfe/semi-icons";
-import { Tooltip, Tag } from "@douyinfe/semi-ui";
+import { IconApps, IconMore, IconLock, IconDelete } from "@douyinfe/semi-icons";
+import { Tooltip, Tag, Empty } from "@douyinfe/semi-ui";
 
 // 图片工具
 export function ImageTool() {
@@ -31,19 +31,26 @@ export function ImageTool() {
 
   return (
     <div className={style.imageTool}>
-      {getImageList().map(({ target, ...img }, i) => (
-        <ImageInfoItem
-          key={`ImageInfoItem__${i}`}
-          {...img}
-          onClick={() => {
-            currentOperator!.fabricCanvas.absolutePan({ x: 0, y: 0 });
-            currentOperator!.fabricCanvas.setActiveObject(target);
-          }}
-          onRepeatClick={() => {
-            handleRepeat(target);
-          }}
-        />
-      ))}
+      {currentElements?.length > 0 ? (
+        getImageList().map(({ target, ...img }, i) => (
+          <ImageInfoItem
+            key={`ImageInfoItem__${i}`}
+            {...img}
+            onClick={() => {
+              currentOperator!.fabricCanvas.absolutePan({ x: 0, y: 0 });
+              currentOperator!.fabricCanvas.setActiveObject(target);
+            }}
+            onRepeatClick={() => {
+              handleRepeat(target);
+            }}
+          />
+        ))
+      ) : (
+        <Empty
+          title={"暂无图片"}
+          description="您可以点击左侧图片素材添加到当前画布"
+        ></Empty>
+      )}
     </div>
   );
 }
@@ -59,9 +66,16 @@ function ImageInfoItem({ src, width, height, onClick, onRepeatClick }: any) {
         {`${width}px * ${height}px`}
       </div>
       <div>
+        <Tooltip content={"锁定"}>
+          <IconLock />
+        </Tooltip>
         <Tooltip content={"平铺重复"}>
           <IconApps onClick={onRepeatClick} />
         </Tooltip>
+        <Tooltip content={"删除"}>
+          <IconDelete />
+        </Tooltip>
+
         <IconMore />
       </div>
     </div>

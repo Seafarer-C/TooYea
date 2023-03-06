@@ -11,6 +11,7 @@ import "./index.less";
 import { useState } from "react";
 import { ImageTool } from "./image";
 import { PaintTool } from "./paint";
+import { BackgroundTool } from "./background";
 
 interface ToolsBarProps {
   className?: string;
@@ -21,18 +22,18 @@ interface MainTool {
   key: ActiveToolKey;
   title: string;
   icon: JSX.Element;
-  onClick: () => void;
 }
 
 export function ToolsBar({ className }: ToolsBarProps) {
   // 当前使用的工具
   const [activeToolKey, setActiveToolKey] = useState<ActiveToolKey | null>();
-  // 弹出层组件
-  const [popover, setPopover] = useState<JSX.Element>(<></>);
 
-  function clearPopover() {
-    setActiveToolKey(null);
-    setPopover(<></>);
+  function clickToolItem(key: ActiveToolKey) {
+    if (activeToolKey === key) {
+      setActiveToolKey(null);
+    } else {
+      setActiveToolKey(key);
+    }
   }
   // 工具组
   const mainTools: Array<MainTool> = [
@@ -40,69 +41,56 @@ export function ToolsBar({ className }: ToolsBarProps) {
       title: "图片",
       key: "image",
       icon: <IconImageStroked />,
-      onClick: () => {
-        if (activeToolKey === "image") {
-          clearPopover();
-        } else {
-          setActiveToolKey("image");
-          setPopover(
-            <div className="tools-bar-popover">
-              <ImageTool />
-            </div>
-          );
-        }
-      },
     },
     {
       title: "背景",
       key: "background",
       icon: <IconFillStroked />,
-      onClick: () => {
-        if (activeToolKey === "background") {
-          clearPopover();
-        } else {
-          setActiveToolKey("background");
-          setPopover(<div className="tools-bar-popover">背景图</div>);
-        }
-      },
     },
     {
       title: "文本",
       key: "text",
       icon: <IconTextStroked />,
-      onClick: () => {
-        if (activeToolKey === "text") {
-          clearPopover();
-        } else {
-          setActiveToolKey("text");
-          setPopover(<div className="tools-bar-popover">暂未开放</div>);
-        }
-      },
     },
     {
       title: "涂鸦",
       key: "paint",
       icon: <IconEditStroked />,
-      onClick: () => {
-        if (activeToolKey === "paint") {
-          clearPopover();
-        } else {
-          setActiveToolKey("paint");
-          setPopover(<PaintTool />);
-        }
-      },
     },
   ];
+
+  function getPopover() {
+    switch (activeToolKey) {
+      case "image":
+        return (
+          <div className="tools-bar-popover">
+            <ImageTool />
+          </div>
+        );
+      case "text":
+        return <div className="tools-bar-popover">暂未开放</div>;
+      case "background":
+        return (
+          <div className="tools-bar-popover">
+            <BackgroundTool />
+          </div>
+        );
+      case "paint":
+        return <PaintTool />;
+      default:
+        return <></>;
+    }
+  }
 
   return (
     <div className={`${className} tools-bar-wrapper`}>
       <div className={`tools-bar-content`}>
-        {popover}
+        {getPopover()}
         <div className="tools-bar">
-          {mainTools.map(({ title, key, icon, onClick }) => (
+          {mainTools.map(({ title, key, icon }) => (
             <div
               key={key}
-              onClick={onClick}
+              onClick={() => clickToolItem(key)}
               className={`tool-item ${
                 activeToolKey === key ? "tool-item_active" : ""
               }`}

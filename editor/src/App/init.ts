@@ -49,14 +49,6 @@ export const useInit = async () => {
       );
       const mts = res.map((v) => v.meshTextures);
       const operator = mts[0][0].getCanvasOperator();
-      await operator?.addImage("vite.svg");
-      await operator?.addImage("react.svg");
-      //   operator?.createRepeatGroupFromElement(operator.elements[0], {
-      //     rowGap: 40,
-      //     columnGap: 40,
-      //     rowNumber: 20,
-      //     columnNumber: 10,
-      //   });
 
       setMeshTextures(mts);
       setCurrentOperator(operator);
